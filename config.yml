@@ -1,0 +1,11 @@
+# config file
+# 
+# contains basic configuration settings and such
+
+# database settings
+---
+
+db_user: root
+db_password: ''
+db_host: localhost
+db_database: branch

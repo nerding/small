@@ -27,10 +27,14 @@
 
     Passwords *are* salted and such. It's quite nice.
   */
-  //Users::create("admin", "helloworld", "don@dkuntz2.com", "Don Kuntz");
+  //Users::create("admin", "helloworld", "don@dkuntz2.com", "Don Kuntz");\
+
+  $canLogin = Users::login("admin", "helloworld");
+  echo $canLogin ? "Success" : "Failed";
   
 ?>
 
+<br />
 Hi there guys.
 
 <?php

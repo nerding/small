@@ -25,14 +25,27 @@
     }
 
     public function query($queryString) {
+      // debugging purposes
       echo $queryString;
 
       if ($stmt = $this->db->prepare($queryString)) {
         $stmt->execute();
-        $out = $stmt->get_result();
+        $out = $stmt->result_metadata();
         $stmt->close();
 
         return $out;
+      }
+
+      echo "DEATH TO ALL";
+      return false;
+    }
+
+    public function queryStmt($queryString) {
+      echo $queryString;
+
+      if ($stmt = $this->db->prepare($queryString)) {
+        $stmt->execute();
+        return $stmt;
       }
 
       echo "DEATH TO ALL";

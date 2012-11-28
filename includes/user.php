@@ -73,8 +73,37 @@
 
       // the BranchDB class automatically prepares our query,
       // so we don't have to do anything to make it work.
-      self::$db->query($query);
+      $out = self::$db->query($query);
 
+      if ($out != false) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
+    public static function login($username, $password) {
+      $query = "select password from users where username = \"$username\";";
+
+      $stmt = self::$db->queryStmt($query);
+      $stmt->bind_result($hashword);
+      $stmt->fetch();
+      $stmt->close();
+
+      // debugging
+      echo '<br >' . $hashword . "<br >";
+
+      // salt is first 64 chars of stored password
+      $salt = substr($hashword, 0, 64);
+
+      $hash = self::gimmieHash($salt, $password);
+
+      if ($hash == $hashword) {
+        return true;
+      }
+
+      return false;
     }
 
     private static function gimmieHash($salt, $password) {

@@ -5,6 +5,16 @@
 # database settings
 ---
 
+db:
+	user: root
+	password: ''
+	host: localhost
+	database: branch
+	salt: branchSalt_$@?!=/>wordup
+
+site:
+	name: "Branch Test"
+
 db_user: root
 db_password: ''
 db_host: localhost

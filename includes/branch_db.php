@@ -1,5 +1,8 @@
 <?php
 
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+
   class BranchDB { 
     private $db;
     private $config;
@@ -22,7 +25,18 @@
     }
 
     public function query($queryString) {
-      return $this->db->query($queryString);
+      echo $queryString;
+
+      if ($stmt = $this->db->prepare($queryString)) {
+        $stmt->execute();
+        $out = $stmt->get_result();
+        $stmt->close();
+
+        return $out;
+      }
+
+      echo "DEATH TO ALL";
+      return false;
     }
 
   }

@@ -1,19 +1,6 @@
 <?php
-  //require_once('branch_db.php');  
-  error_reporting(E_ALL);
-  ini_set('display_errors','On');
-
 
   class Users {
-    private static $config;
-    private static $db;
-
-
-    public static function init() {
-      $configObj = new Config();
-      self::$db = new BranchDB($configObj);
-      self::$config = $configObj->getConfig();
-    }
 
     /*
       Create a new user.
@@ -73,7 +60,7 @@
 
       // the BranchDB class automatically prepares our query,
       // so we don't have to do anything to make it work.
-      $out = self::$db->query($query);
+      $out = BranchDB::query($query);
 
       if ($out != false) {
         return true;
@@ -86,7 +73,7 @@
     public static function isPasswordCorrect($username, $password) {
       $query = "select password from users where username = \"$username\";";
 
-      $stmt = self::$db->queryStmt($query);
+      $stmt = BranchDB::queryStmt($query);
       $stmt->bind_result($hashword);
       $stmt->fetch();
       $stmt->close();
@@ -112,8 +99,6 @@
       }
 
       $user = self::find_by_username($username);
-
-      $_session['user_id'] = 
     }
 
     private static function gimmieHash($salt, $password) {
@@ -136,7 +121,7 @@
 
     function find_by_username($inUser) {
       $query = "select id,username,email,name,biography from users where username = \"$inUser\";";
-      $stmt = self::$db->queryStmt($query);
+      $stmt = BranchDB::queryStmt($query);
 
       if ($stmt == false) {
         return false;
@@ -150,7 +135,6 @@
       return $out;
     }
   }
-  Users::init();
 
 
   class DBUser {

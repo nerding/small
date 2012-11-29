@@ -4,31 +4,24 @@
   ini_set('display_errors','On');
 
   class BranchDB { 
-    private $db;
-    private $config;
+    private static $db;
 
-    public function BranchDB($config) {
+    public static function init() {
       $nArgs = func_get_args();
 
-      $this->config = $config->getConfig();
-
-      /*if ($nArgs == 1) {
-        $dbname = func_get_args(0);
-      }*/
-
-      $this->db = new mysqli(
-        $this->config['db_host'],
-        $this->config['db_user'],
-        $this->config['db_password'],
-        $this->config['db_database']
+      self::$db = new mysqli(
+        Config::get('db_host'),
+        Config::get('db_user'),
+        Config::get('db_password'),
+        Config::get('db_database')
       );
     }
 
-    public function query($queryString) {
+    public static function query($queryString) {
       // debugging purposes
       echo $queryString;
 
-      if ($stmt = $this->db->prepare($queryString)) {
+      if ($stmt = self::$db->prepare($queryString)) {
         $stmt->execute();
         $out = $stmt->result_metadata();
         $stmt->close();
@@ -40,10 +33,10 @@
       return false;
     }
 
-    public function queryStmt($queryString) {
+    public static function queryStmt($queryString) {
       echo $queryString;
 
-      if ($stmt = $this->db->prepare($queryString)) {
+      if ($stmt = self::$db->prepare($queryString)) {
         $stmt->execute();
         return $stmt;
       }
@@ -53,5 +46,6 @@
     }
 
   }
+  BranchDB::init();
 
 ?>

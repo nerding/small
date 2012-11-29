@@ -6,16 +6,21 @@
   require_once('Spyc.php');
 
   class Config {
-    private $config;
+    private static $config;
 
-    public function Config() {
-      $this->config = Spyc::YAMLLoad("config.yml");
+    public static function init() {
+      self::$config = Spyc::YAMLLoad("config.yml");
     }
 
-    public function getConfig() {
-      return $this->config;
+    public static function getConfig() {
+      return self::$config;
     }
 
+    public static function get($key) {
+      return self::$config[$key];
+    }
   }
+
+  Config::init();
 
 ?>

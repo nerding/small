@@ -30,10 +30,11 @@
   //Users::create("admin", "helloworld", "don@dkuntz2.com", "Don Kuntz");\
 
   $canLogin = Users::login("admin", "helloworld");
+  echo "\n<br>";
   echo $canLogin ? "Success" : "Failed";
+  echo "\n<br>";
   
 ?>
-
 <br />
 Hi there guys.
 

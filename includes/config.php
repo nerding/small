@@ -17,7 +17,20 @@
     }
 
     public static function get($key) {
-      return self::$config[$key];
+      if (strpos($key, '.')) {
+        $exp = explode('.', $key);
+        
+        $out = self::$config[$exp[0]];
+
+        for ($i = 1; $i < count($exp); $i++) {
+          $out = $out[$exp[$i]];
+        }
+      }
+      else {
+        $out = self::$config[$key];
+      }
+
+      return $out;
     }
   }
 

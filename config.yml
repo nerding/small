@@ -1,8 +1,6 @@
 # config file
 # 
 # contains basic configuration settings and such
-
-# database settings
 ---
 
 db:
@@ -10,18 +8,11 @@ db:
 	password: ''
 	host: localhost
 	database: branch
-	salt: branchSalt_$@?!=/>wordup
 
 site:
-	name: "Branch Test"
-
-db_user: root
-db_password: ''
-db_host: localhost
-db_database: branch
-
-# a random salting string. Eventually, when this config file gets 
-# generated in the install, this should be done by that, and not
-# by hand. For now, just pick some random string. It'll be fun, I
-# promise...
-salt: branchSalt_$@?!=/>wordup
+  name: "Branch Test"
+  # a random salting string. Eventually, when this config file gets 
+  # generated in the install, this should be done by that, and not
+  # by hand. For now, just pick some random string. It'll be fun, I
+  # promise...
+  salt: branchSalt_$@?!=/>wordup

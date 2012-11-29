@@ -6,6 +6,7 @@
 
   require_once('includes/config.php');
   require_once('includes/branch_db.php');
+  require_once('includes/session.php');
   require_once('includes/user.php');
 
   $config = new Config();
@@ -24,31 +25,53 @@
   </style>
 
   <script src="js/jquery-1.8.3.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      $("#createUser").submit(function(event) {
-        event.preventDefault();
-
-        var outData = {}
-
-        // is usernam
-        outData['username'] = $("#createUsername").val();
-        outData['password'] = $("#createPassword").val();
-        outData['email'] = $("#createEmail").val();
-        outData['name'] = $("#createName").val();
-        outData['bio'] = $("#createBio").val();
-
-        $.post("ajax.php?action=create_user", outData, function(data) {
-          alert(data);
-        });
-      })
-    })
-  </script>
 </head>
 
 <body>
-	<div class="left half">
-    <h1>Create User</h1>
+  <?php if (Users::isLoggedIn()):?>
+  <h1>Hello <?php echo Session::get('username'); ?></h1>
+  <button id="logout">Logout</button>
+
+  <br clear="both">
+
+  <script>
+    $(document).ready(function() {
+      $("#logout").click(function(event) {
+        event.preventDefault();
+
+        $.get("ajax.php?action=logout", function(data) {
+          location.reload();
+        })
+      })
+    })
+  </script>
+
+  <?php endif; ?>
+
+  <div class="left half">
+    <?php if (Users::isLoggedIn()): ?>
+    <script>
+      $(document).ready(function() {
+        $("#createUser").submit(function(event) {
+          event.preventDefault();
+
+          var outData = {}
+
+          // is usernam
+          outData['username'] = $("#createUsername").val();
+          outData['password'] = $("#createPassword").val();
+          outData['email'] = $("#createEmail").val();
+          outData['name'] = $("#createName").val();
+          outData['bio'] = $("#createBio").val();
+
+          $.post("ajax.php?action=create_user", outData, function(data) {
+            alert(data);
+          });
+        })
+      })
+    </script>
+
+    <h2>Create User</h2>
     <form id="createUser">
       <label for="createUsername">Username*</label><br>
       <input type="text" name="createUsername" id="createUsername" placeholder="username" required />
@@ -72,9 +95,12 @@
       <br>
       <input type="submit" id="makeUser" value="Make User" />
     </form>
+    <?php endif; ?>
 
-    <h1>Try Logging In</h1>
+    <h2>Try Logging In</h2>
     <form id="loginUser">
+      <div id="loginError" class="notice" style="display:none"></div>
+
       <label for="loginUsername">Username</label><br>
       <input type="text" name="loginUsername" id="loginUsername" />
 
@@ -85,11 +111,61 @@
       <br>
       <input type="submit" id="tryLogin" value="Login" />
     </form>
+
+    <script>
+      $(document).ready(function() {
+        $("#loginUser").submit(function(event) {
+          event.preventDefault();
+
+          $("#tryLogin").val("Working...");
+          $("#tryLogin").attr("disabled", "disabled");
+
+          var outData = {};
+          outData['username'] = $("#loginUsername").val();
+          outData['password'] = $("#loginPassword").val();
+
+          $.post("ajax.php?action=login", outData, function(data) {
+            json = $.parseJSON(data);
+            $("#tryLogin").removeAttr("disabled");
+
+            <?php if (Users::isLoggedIn()): ?>
+              if (json.error == null) {
+                $("#tryLogin").val("Login");
+                $("#loginError").text("Login works - you will be that user...");
+                $("#loginError").show()
+              }
+            <?php else: ?>
+              if (json.error == null) {
+                $("#tryLogin").val("Logging In");
+                location.reload();
+              }
+              else {
+                $("#tryLogin").val("Login");
+                $("#loginError").text(json.error);
+                $("#loginError").show();
+                console.log("error");
+                console.log(json);
+              }
+            <?php endif; ?>
+          });
+
+        })
+      })
+    </script>
 	</div>
 
 	<div class="right half">
-    <h1>Write a post</h1>
-    <p><strong>You need to be logged in first</strong></p>
+    <?php if (Users::isLoggedIn()) :?>
+    <h3>Posts</h3>
+
+    <hr>
+    <h3>Write A Post</h3>
+
+    <form>
+
+    </form>
+    <?php endif; ?>
 	</div>
+
 </body>
 </html>

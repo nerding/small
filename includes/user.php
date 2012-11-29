@@ -1,4 +1,5 @@
 <?php
+  //include("includes/session.php");
 
   class Users {
 
@@ -26,7 +27,7 @@
       // generate the unique salt for this user
       // based on the current time and their username
       // fun stuff...
-      $salt = hash('sha256', uniqid(mt_rand(), true) . self::$config['salt'] . strtolower($username));
+      $salt = hash('sha256', uniqid(mt_rand(), true) . Config::get('site.salt') . strtolower($username));
 
       // create a hash based on the salt and password.
       // this is a method because eventually we'll grab the
@@ -70,7 +71,7 @@
       }
     }
 
-    public static function isPasswordCorrect($username, $password) {
+    public static function validatePassword($username, $password) {
       $query = "select password from users where username = \"$username\";";
 
       $stmt = BranchDB::queryStmt($query);
@@ -94,11 +95,34 @@
     }
 
     public static function login($username, $password) {
-      if (!self::isPasswordCorrect($username, $password)) {
+      if (!self::validatePassword($username, $password)) {
+        return false;
+      } 
+      
+      $user = self::find_by_username($username);
+
+
+      if ($user == false) {
         return false;
       }
 
-      $user = self::find_by_username($username);
+      Session::start();
+      Session::set('id', $user->id);
+      Session::set('username', $user->username);
+
+      if (isset($user->name)) {
+        Session::set('name', $user->name);
+      }
+      
+      return true;
+    }
+
+    public static function logout() {
+      Session::end();
+    }
+
+    public static function isLoggedIn() {
+      return Session::hasSession();
     }
 
     private static function gimmieHash($salt, $password) {
@@ -115,11 +139,11 @@
       Find by functions
     */
 
-    function find_by_id($id) {
+    public static function find_by_id($id) {
 
     }
 
-    function find_by_username($inUser) {
+    public static function find_by_username($inUser) {
       $query = "select id,username,email,name,biography from users where username = \"$inUser\";";
       $stmt = BranchDB::queryStmt($query);
 
@@ -127,7 +151,7 @@
         return false;
       }
 
-      $stmt->bind_results($id, $username, $email, $name, $biography);
+      $stmt->bind_result($id, $username, $email, $name, $biography);
       $stmt->fetch();
       $out = new DBUser($id, $username, $email, $name, $biography);
 
@@ -165,10 +189,10 @@
         $this->email = func_get_arg(2);
       }
       if ($numArgs >= 4) {
-        $this->name = func_get_args(3);
+        $this->name = func_get_arg(3);
       }
       if ($numArgs == 5) {
-        $this->biography = func_get_args(4);
+        $this->biography = func_get_arg(4);
       }
 
     }

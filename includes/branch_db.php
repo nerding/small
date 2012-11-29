@@ -10,16 +10,16 @@
       $nArgs = func_get_args();
 
       self::$db = new mysqli(
-        Config::get('db_host'),
-        Config::get('db_user'),
-        Config::get('db_password'),
-        Config::get('db_database')
+        Config::get('db.host'),
+        Config::get('db.user'),
+        Config::get('db.password'),
+        Config::get('db.database')
       );
     }
 
     public static function query($queryString) {
       // debugging purposes
-      echo $queryString;
+      //echo $queryString;
 
       if ($stmt = self::$db->prepare($queryString)) {
         $stmt->execute();
@@ -34,7 +34,7 @@
     }
 
     public static function queryStmt($queryString) {
-      echo $queryString;
+      //echo $queryString;
 
       if ($stmt = self::$db->prepare($queryString)) {
         $stmt->execute();

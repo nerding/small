@@ -28,7 +28,7 @@ When attempting to validate a password from an unhashed string:
 // get the user's unique salt
 $salt = substr($databasePassword, 0, 64);
 
-// generate the password hash - must be in Users class.
+// generate the password hash - must be in User class.
 //
 // gimmmieHash is a private function inside of Users, it just
 // takes ($salt . $inputPassword) and hashes it together 100000 times

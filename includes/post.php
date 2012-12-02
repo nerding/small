@@ -90,7 +90,7 @@
 
       // parse out yaml
       $break = explode("---", $cont);
-      $yaml = $break[1];
+      $yaml = "---" . $break[1];
 
       $cont = '';
       for ($i = 2; $i < count($break); $i++) {

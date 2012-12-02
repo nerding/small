@@ -1,5 +1,27 @@
 # Directory Structure
 
+## Current
+
+    /contents       # all user content
+    |   /posts      # all post files
+
+    /database       # an sql dump of the database I'm using to develop this
+
+    /includes       # all class files and other libraries I'm using. 
+                    # will eventualy be inside of the future /branch
+                    # directory
+
+    /js             # contains jquery. Will most likely be moved into
+                    # the future /theme and /branch directories, because
+                    # it'll be uesd by both.
+                    #
+                    # But extensively by the admin area...
+
+    /spec           # all specification files for the project. Including
+                    # this one...
+
+## Eventual - hopefully
+
 There are three non-root directories:
 
 - `/branch` - the administrative area

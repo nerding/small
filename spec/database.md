@@ -1,5 +1,7 @@
 # The Database
 
+You can find an sql dump of my working database in the `./database` directory.
+
 The database has five entity tables:
 
 - Users

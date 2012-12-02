@@ -8,6 +8,7 @@
   require_once('includes/branch_db.php');
   require_once('includes/session.php');
   require_once('includes/user.php');
+  require_once('includes/post.php');
 
   $config = new Config();
 
@@ -28,7 +29,7 @@
 </head>
 
 <body>
-  <?php if (Users::isLoggedIn()):?>
+  <?php if (User::isLoggedIn()):?>
   <h1>Hello <?php echo Session::get('username'); ?></h1>
   <button id="logout">Logout</button>
 
@@ -49,7 +50,7 @@
   <?php endif; ?>
 
   <div class="left half">
-    <?php if (Users::isLoggedIn()): ?>
+    <?php if (User::isLoggedIn()): ?>
     <script>
       $(document).ready(function() {
         $("#createUser").submit(function(event) {
@@ -128,7 +129,7 @@
             json = $.parseJSON(data);
             $("#tryLogin").removeAttr("disabled");
 
-            <?php if (Users::isLoggedIn()): ?>
+            <?php if (User::isLoggedIn()): ?>
               if (json.error == null) {
                 $("#tryLogin").val("Login");
                 $("#loginError").text("Login works - you will be that user...");
@@ -155,8 +156,17 @@
 	</div>
 
 	<div class="right half">
-    <?php if (Users::isLoggedIn()) :?>
+    <?php if (User::isLoggedIn()) :?>
     <h3>Posts</h3>
+
+
+    <?php foreach(Post::all() as $post): ?>
+    <div class="post post-<?php echo $post->id ?>">
+      <h4><?php echo $post->title ?></h4>
+
+      <?php echo $post->contents() ?>
+    </div>
+    <?php endforeach; ?>
 
     <hr>
     <h3>Write A Post</h3>

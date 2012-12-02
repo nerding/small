@@ -1,7 +1,7 @@
 <?php
   //include("includes/session.php");
 
-  class Users {
+  class User {
 
     /*
       Create a new user.
@@ -140,23 +140,29 @@
     */
 
     public static function find_by_id($id) {
-
+      return self::find("where id=$id")[0];
     }
 
     public static function find_by_username($inUser) {
-      $query = "select id,username,email,name,biography from users where username = \"$inUser\";";
+      return self::find("where username=\"$inUser\"")[0];
+    }
+
+    private static function find() {
+      $num_args = func_get_args();
+      $query = 'select id,username,email,name,biography from users';
+      $query .= $num_args == 1 ? ' ' . func_get_arg(0) : '';
+      $query .= ';';
+
+      $out = array();
       $stmt = BranchDB::queryStmt($query);
 
-      if ($stmt == false) {
-        return false;
+      $stmt->bind_result($id, $username, $email, $name, $biography);
+      while ($stmt->fetch()) {
+        array_push($out, new DBUser($id, $username, $email, $name, $biography));
       }
 
-      $stmt->bind_result($id, $username, $email, $name, $biography);
-      $stmt->fetch();
-      $out = new DBUser($id, $username, $email, $name, $biography);
-
-      $stmt->close();
       return $out;
+
     }
   }
 

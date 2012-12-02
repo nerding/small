@@ -17,24 +17,26 @@ super-hashed password.
 
 When attempting to validate a password from an unhashed string:
 
-    /*
-      Variables:
+```php
+/*
+  Variables:
 
-        $inputPassword - the password being tested
-        $databasePassword - the password from the database (users.password)
-    */
+    $inputPassword - the password being tested
+    $databasePassword - the password from the database (users.password)
+*/
 
-    // get the user's unique salt
-    $salt = substr($databasePassword, 0, 64);
+// get the user's unique salt
+$salt = substr($databasePassword, 0, 64);
 
-    // generate the password hash - must be in Users class.
-    //
-    // gimmmieHash is a private function inside of Users, it just
-    // takes ($salt . $inputPassword) and hashes it together 100000 times
-    $hash = self::gimmieHash($salt, $inputPassword);
+// generate the password hash - must be in Users class.
+//
+// gimmmieHash is a private function inside of Users, it just
+// takes ($salt . $inputPassword) and hashes it together 100000 times
+$hash = self::gimmieHash($salt, $inputPassword);
 
-    // if the hash is equal to $databasePassword, $inputPassword is the
-    // user's password
-    return $hash == $databasePassword;
+// if the hash is equal to $databasePassword, $inputPassword is the
+// user's password
+return $hash == $databasePassword;
+```
 
 Fun, right?

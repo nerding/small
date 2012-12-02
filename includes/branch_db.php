@@ -29,7 +29,8 @@
         return $out;
       }
 
-      echo "DEATH TO ALL";
+      echo "BranchDB::query\n";
+      echo self::$db->error;
       return false;
     }
 
@@ -41,7 +42,8 @@
         return $stmt;
       }
 
-      echo "DEATH TO ALL";
+      echo "BranchDB::queryStmt\n";
+      echo self::$db->error;
       return false;
     }
 

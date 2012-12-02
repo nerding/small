@@ -1,23 +1,33 @@
 <?php
 
   require_once('markdown/markdown.php');
+  date_default_timezone_set('UTC');
 
   class Post {
 
+    // return ALL posts as DBPosts.
     public static function all() {
       return self::find();
     }
 
-    public static function find_all_published() {
-
+    // return all PUBLISHED posts as DBPosts.
+    public static function published() {
+      return self::find('where published=true');
     }
 
+    public static function find_by_id($id) {
+      return self::find("where id=$id")[0];
+    }
+
+    /*
+      Takes in 0 or 1 params: a where clause (including the "where" part).
+    */
     private static function find() {
       $num_args = func_get_args();
 
       $query = 'select id,title,published,pub_date,contents,author_id from posts';
-      $query .= $num_args == 1 ? ' ' . func_get_arg(0) : '';
-      $query .= ';';
+      $query .= count($num_args) == 1 ? ' ' . func_get_arg(0) : '';
+      $query .= ' order by pub_date;';
 
       $stmt = BranchDB::queryStmt($query);
 
@@ -38,9 +48,105 @@
         );
   
       }
+      $stmt->close();
 
       return $out;
     }
+
+    /*
+      Create a new post:
+
+      Post::create($title, $contents, $author_id [, $published [, $pub_date]])
+
+      Params:
+        $title: string: name of post
+        $contents: blob/text: the post's contents
+        $author_id: int: id in users table of author
+        $published: boolean: is is published
+        $pub_date: long: time in seconds using unix epoch.
+    */
+    public static function create($title, $content, $author_id) {
+      $num_args = func_get_args();
+
+      $published = true;
+      $pub_date = date('Y-m-d H:i:s');
+
+      if (count($num_args) >= 4) {
+        if (func_get_arg(3) == true  || func_get_arg(3) == false) {
+          $published = func_get_arg(3);
+        }
+      }
+      if (count($num_args) == 5) {
+        $pub_date = date('Y-m-d H:i:s', func_get_args(4));
+      }
+
+      $pub_date = new DateTime($pub_date);
+
+      // create the file
+      $file = self::createFile(
+        $title, 
+        $content, 
+        User::find_by_id($author_id),
+        $published,
+        $pub_date
+      );
+
+      $query = 'insert into posts (title, published, pub_date, contents, author_id)';
+      $query .= " values (\"$title\", $published, \"";
+      $query .= $pub_date->format('Y-m-d H:i:00');
+      $query .= "\", \"$file\", $author_id);";
+
+      BranchDB::query($query);
+
+      $findQuery = "select id from posts where title = \"$title\" and contents = \"$file\";";
+      $stmt = BranchDB::queryStmt($findQuery);
+      $stmt->bind_result($id);
+      $stmt->fetch();
+      $stmt->close();
+
+      return $id;
+    }
+
+    private static function createFile($title, $contents, $user, $published, $pub_date) {
+      $filedir = $pub_date->format('Y/m/d/');
+      $filename = $filedir . $pub_date->format('H-i-');
+      $filename .= preg_replace('/[^\w]/', '-', strtolower($title));
+      $filename .= '.md';
+
+
+      // generate yaml
+      $yaml = "---\ntitle: $title\npublished: $published\npub_date: ";
+      $yaml .= $pub_date->format('Y-m-d H:i');
+      $yaml .= "\nauthor: " . $user->username . "\n---";
+
+      $contents = $yaml . "\n\n" . $contents;
+
+      if (!is_dir('./contents/posts/' . $filedir)) {
+        mkdir('./contents/posts/' . $filedir, 0777, true);
+      }
+
+      $file = fopen('contents/posts/' . $filename, 'c+');
+      fwrite($file, $contents);
+      fclose($file);
+      chmod('./contents/posts/' . $filename, 0777);
+
+      return $filename;
+    }
+
+    public static function delete($id) {
+      $findQuery = "select contents from posts where id=$id;";
+      $findStmt = BranchDB::queryStmt($findQuery);
+      $findStmt->bind_result($filename);
+      $findStmt->fetch();
+
+      unlink("contents/posts/$filename");
+      $findStmt->close();
+
+      $query = "delete from posts where id=$id;";
+      //echo $query;
+      BranchDB::query($query);
+    }
+
   }
 
   class DBPost {

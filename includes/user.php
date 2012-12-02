@@ -139,6 +139,10 @@
       Find by functions
     */
 
+    public static function all() {
+      return self::find();
+    }
+
     public static function find_by_id($id) {
       return self::find("where id=$id")[0];
     }
@@ -200,7 +204,10 @@
       if ($numArgs == 5) {
         $this->biography = func_get_arg(4);
       }
+    }
 
+    public function getName() {
+      return isset($this->name) && $this->name != "" ? $this->name : $this->username;
     }
   }
 

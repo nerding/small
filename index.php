@@ -11,10 +11,9 @@
   require_once('includes/user.php');
 
 
-  Session::start();
-  Session::set('username', 'admin');
-  Session::end();
-  echo Session::get('username') ? Session::get('username') : "false" ;
+  $title = "This is my fancy title and such... Hello World!";
+  $title = preg_replace('/[^\w]/', '-', strtolower($title));
+  echo $title;
   
 ?>
 

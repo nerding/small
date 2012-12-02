@@ -111,7 +111,7 @@ CREATE TABLE `posts` (
   PRIMARY KEY (`id`),
   KEY `author_id` (`author_id`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,7 +120,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (1,'Test File',0,'2012-12-01 23:42:46','2012/12/01/23-42-test-file.md',8);
+INSERT INTO `posts` VALUES (1,'Test File',0,'2012-12-01 23:42:46','2012/12/01/23-42-test-file.md',8),(3,'Gruber\'s Markdown Syntax page',1,'2012-12-02 18:56:00','2012/12/02/18-56-gruber-s-markdown-syntax-page.md',8);
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,4 +185,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-02  0:31:26
+-- Dump completed on 2012-12-02 13:29:36

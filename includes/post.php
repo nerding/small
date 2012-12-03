@@ -188,6 +188,14 @@
         return false;
       }
 
+      return Markdown($this->markdown());
+    }
+
+    public function markdown() {
+      if ($this->post_file == null) {
+        return false;
+      }
+
       $filename = './contents/posts/' . $this->post_file;
 
       $file = fopen($filename, 'r');
@@ -206,7 +214,7 @@
         }
       }
 
-      return Markdown($cont);
+      return $cont;
     }
   }
 

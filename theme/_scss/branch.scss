@@ -1,0 +1,36 @@
+@import "../fonts/geared/stylesheet.css";
+
+$lightgray: hsl(170, 5%, 85%);
+$medgray: hsla(170, 5%, 65%, 0.4);
+
+body {
+  background:url(../img/gray_jean.png);
+}
+
+.wrap {
+  background:white;
+  width:800px;
+  margin:50px auto;
+
+  border:1px solid $lightgray;
+  box-shadow:3px 3px 3px $medgray;
+}
+
+header {
+  padding:25px 0;
+
+  h1 {
+    font-family:"Geared Slab", sans-serif;
+    text-align:center;
+  }
+}
+
+footer {
+  border-top:1px solid $lightgray;
+
+  p {
+    text-align:center;
+    font-size:.8em;
+    color: darken($lightgray, 20%);
+  }
+}

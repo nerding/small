@@ -165,7 +165,9 @@
       <h4><?php echo $post->title ?></h4>
       <button class="deletePost" post-id="<?php echo $post->id?>">Delete Post</button>
 
-      <?php echo $post->contents() ?>
+      <div id="postContent-<?php echo $post->id ?>">
+        <?php echo $post->contents() ?>
+      </div>
     </div>
     <?php endforeach; ?>
 

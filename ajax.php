@@ -111,6 +111,13 @@
       echo '{"error" : "function not implemented yet"}';
       return;
     }
+
+    // get markdown content
+    else if ($_GET['action'] == 'post_markdown') {
+
+      echo '{"error" : "function not implemented yet"}';
+      return;
+    }
 	}
 	else {
 		echo "{'error': 'No action'}";

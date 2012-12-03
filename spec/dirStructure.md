@@ -5,11 +5,15 @@
     /contents       # all user content
     |   /posts      # all post files
 
+    /branch         # to eventually become a nice admin area. Currently
+    |               # contains an individual file to be included in each
+    |               # branch document
+    |
+    |   /includes   # all class files and other libraries I'm using. 
+    
+    /theme          # all theme files. Currently just js and css.
+    
     /database       # an sql dump of the database I'm using to develop this
-
-    /includes       # all class files and other libraries I'm using. 
-                    # will eventualy be inside of the future /branch
-                    # directory
 
     /js             # contains jquery. Will most likely be moved into
                     # the future /theme and /branch directories, because
@@ -70,5 +74,3 @@ the processing).
 Contains the **current** theme used by branch. No other themes are included in
 here. There are no subdirectories (unless the theme uses them for assets and
 the like), there is only (xul) theme.
-
-

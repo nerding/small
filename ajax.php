@@ -1,15 +1,8 @@
 <?php
   ob_start('gzheader');
 
-  error_reporting(E_ALL);
-  ini_set('display_errors','On');
-
-  require_once('includes/config.php');
-  require_once('includes/branch_db.php');
-  require_once('includes/session.php');
-  require_once('includes/user.php');
-  require_once('includes/post.php');
-
+  require_once('branch/branch.php');
+  
 	if (isset($_GET['action'])) {
 		// create a user
     if ($_GET['action'] == 'create_user') {

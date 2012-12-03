@@ -125,6 +125,14 @@
       return Session::hasSession();
     }
 
+    public static function current() {
+      if (!self::isLoggedIn()) {
+        return false;
+      }
+
+      return self::find_by_id(Session::get('id'));
+    }
+
     private static function gimmieHash($salt, $password) {
       $hash = $salt . $password;
       for ($i = 0; $i < 100000; $i++) {
@@ -208,6 +216,18 @@
 
     public function getName() {
       return isset($this->name) && $this->name != "" ? $this->name : $this->username;
+    }
+
+    public function printName() {
+      echo $this->getName();
+    }
+
+    public function gravatarURL() {
+      $url = 'http://gravatar.com/avatar/';
+      $url .= md5($this->email);
+      $url .= '?s=50&d=identicon';
+
+      echo $url;
     }
   }
 

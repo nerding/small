@@ -17,7 +17,7 @@
       //unset($this->sessions[$_SESSION['fingerprint']]);
       unset($_SESSION['fingerprint']);
       unset($_SESSION['username']);
-      unset($_SESSION['user_id']);
+      unset($_SESSION['id']);
       unset($_SESSION['name']);
       session_destroy();
     }

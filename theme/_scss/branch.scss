@@ -3,14 +3,32 @@
 $lightgray: hsl(170, 5%, 85%);
 $medgray: hsla(170, 5%, 65%, 0.4);
 
+@mixin iebox {
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+
+.left {
+  float:left;
+}
+
+.right {
+  float:right;
+}
+
+
 body {
   background:url(../img/gray_jean.png);
 }
 
 .wrap {
+  @include iebox;
+
   background:white;
   width:800px;
   margin:50px auto;
+  padding:0 20px;
 
   border:1px solid $lightgray;
   box-shadow:3px 3px 3px $medgray;
@@ -18,15 +36,66 @@ body {
 
 header {
   padding:25px 0;
+  clear:both;
+
+  display:table;
+  width:100%;
 
   h1 {
     font-family:"Geared Slab", sans-serif;
-    text-align:center;
+    float:left;
+    width:65%;
+    margin:0;
+    height:50px;
+    line-height:50px;
+
+    //text-align:center;
+  }
+
+
+  .user {
+    height:50px;
+    float:right;
+    width:35%;
+
+    p {
+      margin:0;
+      text-align:right;
+      line-height:25px;
+    }
+
+    img.right {
+      height:50px; width:50px;
+      -moz-border-radius:50%;
+      border-radius:50%;
+      margin-left:20px;
+    }
+  }
+
+  .login {
+    float:right;
+    width:25%;
+    height:50px;
+
+    input {
+      width:100%;
+      height:20px;
+      margin-bottom:4px;
+      border:0;
+      border-bottom:1px solid $lightgray;
+      padding:0 2px;
+    }
   }
 }
 
 footer {
+  clear:both;
   border-top:1px solid $lightgray;
+
+  width:100%;
+  margin-left:-20px;
+  margin-top:20px;
+  padding:20px;
 
   p {
     text-align:center;

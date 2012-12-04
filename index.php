@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Branch Index</title>
+  <title>Index | <?php echo Config::get('site.name'); ?></title>
 
   <link rel="stylesheet" href="theme/css/branch.css">
 
@@ -16,7 +16,7 @@
 
   <div class="wrap">
     <header>
-      <h1>Branch</h1>
+      <h1><?php echo Config::get('site.name'); ?></h1>
 
       <?php if(User::isLoggedIn()):?>
         <div class="user">
@@ -38,7 +38,7 @@
     </header>
 
     <section>
-
+      <?php //Page::index(); ?>
     </section>
 
     <footer>

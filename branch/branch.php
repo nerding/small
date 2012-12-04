@@ -9,5 +9,6 @@
   require_once('includes/session.php');
   require_once('includes/user.php');
   require_once('includes/post.php');
+  require_once('includes/page.php');
   
 ?>

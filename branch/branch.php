@@ -4,11 +4,17 @@
   error_reporting(E_ALL);
   ini_set('display_errors','On');
 
-  require_once('includes/config.php');
-  require_once('includes/branch_db.php');
-  require_once('includes/session.php');
-  require_once('includes/user.php');
-  require_once('includes/post.php');
-  require_once('includes/page.php');
+  // stop some annoyances
+  // eventually, this should be grabbed from the config file...
+  date_default_timezone_set('UTC');
+
+
+  // require all of the branch classes
+  require_once(__dir__ . '/includes/config.php');
+  require_once(__dir__ . '/includes/branch_db.php');
+  require_once(__dir__ . '/includes/session.php');
+  require_once(__dir__ . '/includes/user.php');
+  require_once(__dir__ . '/includes/post.php');
+  require_once(__dir__ . '/includes/page.php');
   
 ?>

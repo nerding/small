@@ -1,15 +1,12 @@
 <?php
 
-  error_reporting(E_ALL);
-  ini_set('display_errors','On');
-
-  require_once('Spyc.php');
+  require_once(__dir__ . '/Spyc.php');
 
   class Config {
     private static $config;
 
     public static function init() {
-      self::$config = Spyc::YAMLLoad("config.yml");
+      self::$config = Spyc::YAMLLoad(__dir__ . "/../../config.yml");
     }
 
     public static function getConfig() {

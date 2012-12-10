@@ -1,30 +1,15 @@
 <?php
-	  ob_start('gzheader');
-
-  error_reporting(E_ALL);
-  ini_set('display_errors','On');
-
+	ob_start('gzheader');
   require_once('branch/branch.php');
 
-  $config = new Config();
+  $title = "playground";
+  $header = Config::get('site.name') . "::playground";
 
-
+  include_once('theme/header.php');
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Branch Playground</title>
 
-  <style>
-    .left {float:left; margin-right:2%;}
-    .right {float:right; margin-left:2%;}
-    .half {width:48%;}
-  </style>
 
-  <script src="js/jquery-1.8.3.min.js"></script>
-</head>
-
-<body>
+<?php /*
   <?php if (User::isLoggedIn()):?>
   <h1>Hello <?php echo Session::get('username'); ?></h1>
   <button id="logout">Logout</button>
@@ -249,6 +234,6 @@
     </script>
     <?php endif; ?>
 	</div>
-
+*/ ?>
 </body>
 </html>

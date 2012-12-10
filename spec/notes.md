@@ -18,3 +18,16 @@ this to warrent somebody hacking it there will be some form of community
 behind this helping make it work.
 
 Look, I don't know, okay.
+
+## includes and requires
+
+All includes should use `__dir__` plus the relative path of the file.
+
+For example, if I'm in `./aDir/sub/file.ext` and want to access the file
+`./aDir/sub2/diffFile.ext`, I would use
+
+```php
+require_once(__dir__ . "/../sub2/diffFile.ext");
+```
+
+Why? Because it makes things work. Working things are *good*.

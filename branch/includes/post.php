@@ -1,8 +1,7 @@
 <?php
 
-  require_once('markdown/markdown.php');
-  date_default_timezone_set('UTC');
-
+  require_once(__dir__ . '/markdown/markdown.php');
+  
   class Post {
 
     // return ALL posts as DBPosts.
@@ -25,26 +24,22 @@
     private static function find() {
       $num_args = func_get_args();
 
-      $query = 'select id,title,published,pub_date,contents,author_id from posts';
+      $query = 'select id,title,published,pub_date,contents,author_id';
+      $query .= 'from posts';
       $query .= count($num_args) == 1 ? ' ' . func_get_arg(0) : '';
       $query .= ' order by pub_date;';
 
       $stmt = BranchDB::queryStmt($query);
 
       $out = array();
-      $stmt->bind_result($id, $title, $published, $pub_date, $post_file, $auth_id);
+      $stmt->bind_result(
+        $id, $title, $published, $pub_date, $post_file, $auth_id);
 
       while ($stmt->fetch()) {
         array_push(
           $out, 
           new DBPost(
-            $id, 
-            $title, 
-            $published, 
-            $pub_date, 
-            $post_file, 
-            $auth_id
-          )
+            $id, $title, $published, $pub_date, $post_file, $auth_id)
         );
   
       }
@@ -91,14 +86,16 @@
         $pub_date
       );
 
-      $query = 'insert into posts (title, published, pub_date, contents, author_id)';
+      $query = 'insert into posts ';
+      $query .= '(title, published, pub_date, contents, author_id)';
       $query .= " values (\"$title\", $published, \"";
       $query .= $pub_date->format('Y-m-d H:i:00');
       $query .= "\", \"$file\", $author_id);";
 
       BranchDB::query($query);
 
-      $findQuery = "select id from posts where title = \"$title\" and contents = \"$file\";";
+      $findQuery = 'select id from posts';;
+      $findQuery .= "where title = \"$title\" and contents = \"$file\";";
       $stmt = BranchDB::queryStmt($findQuery);
       $stmt->bind_result($id);
       $stmt->fetch();

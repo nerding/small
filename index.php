@@ -9,6 +9,7 @@
 
   <link rel="stylesheet" href="theme/css/branch.css">
 
+  <script src="theme/js/sha256.js"></script>
   <script src="theme/js/jquery-1.8.3.min.js"></script>
   <script src="theme/js/jqui/js/jquery-ui-1.9.2.custom.min.js"></script>
 </head>
@@ -39,6 +40,17 @@
 
     <section>
       <?php //Page::index(); ?>
+
+      <?php $hash = hash('sha256', 'helloworld'); echo $hash ?><br>
+      <span id="shaout"></span><br><br>
+
+      <?php $nonce = randString(25); echo hash('sha256', $nonce); ?>
+      <span id="nonceout"></span><br><br>
+
+      <?php $full = hash('sha256', 'helloworld') . hash('sha256', $nonce); echo $full; ?>
+      <br><?php echo substr($full, 0, 64); ?><br><?php echo substr($full, 64, 128); ?>
+      <br><?php echo substr($full, 0, 64) == $hash ? "true" : "false"; ?>
+      <span id="fullout"></span><br><br>
     </section>
 
     <footer>
@@ -49,6 +61,9 @@
 
   <script>
     $(document).ready(function() {
+
+      $("#shaout").text(CryptoJS.SHA256('helloworld'))
+      $("#nonceout").text(CryptoJS.SHA256('<?php echo $nonce; ?>'));
 
     <?php if (User::isLoggedIn()): ?>
       $("#logout").click(function(event) {

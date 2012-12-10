@@ -125,6 +125,16 @@
       return Session::hasSession();
     }
 
+    public static function changePassword($username, $password) {
+      $user = self::find_by_id($username);
+
+      $salt = hash('sha256', uniqid(mt_rand(), true) . Config::get('site.salt') . strtolower($username));
+      $hash = self::gimmieHash($salt, $password);
+
+      $query = "update users set password = \"$hash\" where id = {$user->id};";
+      BranchDB::query($query);
+    }
+
     public static function current() {
       if (!self::isLoggedIn()) {
         return false;

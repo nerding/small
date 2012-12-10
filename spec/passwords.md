@@ -77,3 +77,9 @@ get to it) is as follows:
 
 5.    The server checks if the hashes are correct and unsets the 
       `$_SERVER['nonce']` variable. Everything else occurs as it should.
+
+Right now, only the `ajax.php` page cares and acts upon this. That's because 
+it's the only page that accepts ajax requests...
+
+What this means is that anything that isn't ajax-ed in needs to `sha256` the
+password before testing anywhere. Seriously.

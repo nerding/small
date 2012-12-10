@@ -4,137 +4,169 @@
 
   $title = "playground";
   $header = Config::get('site.name') . "::playground";
+  $showLogin = true;
 
   include_once('theme/header.php');
 ?>
 
+<section>
 
-<?php /*
-  <?php if (User::isLoggedIn()):?>
-  <h1>Hello <?php echo Session::get('username'); ?></h1>
-  <button id="logout">Logout</button>
+  <div id="playground_tabs">
+    <ul>
+      <li><a href="#createUser">Create User</a></li>
+      <li><a href="#showUsers">View Users</a></li>
+      <li><a href="#changePass">Change Password</a></li>
+      <li><a href="#createPost">Create Post</a></li>
+      <li><a href="#showPosts">Show Posts</a></li>
+    </ul>
 
-  <br clear="both">
+    <div id="createUser">
+      <div id="createUserNotice" style="display:none;"></div>
+      <form id="createUserForm">
+        <label for="createUsername">Username*</label><br>
+        <input type="text" name="createUsername" id="createUsername" placeholder="username" required />
 
-  <script>
-    $(document).ready(function() {
-      $("#logout").click(function(event) {
-        event.preventDefault();
+        <br>
+        <label for="createPassword">Password*</label><br>
+        <input type="password" name="createPassword" id="createPassword" required />
 
-        $.get("ajax.php?action=logout", function(data) {
-          location.reload();
-        })
-      })
-    })
-  </script>
+        <br>
+        <label for="createEmail">Email Address*</label><br>
+        <input type="email" name="createEmail" id="createEmail" placeholder="you@example.com" required />
 
-  <?php endif; ?>
+        <br>
+        <label for="createName">Real Name</label><br>
+        <input type="text" name="createName" id="createName" placeholder="You" />
 
-  <div class="left half">
-    <?php if (User::isLoggedIn()): ?>
-    <script>
-      $(document).ready(function() {
-        $("#createUser").submit(function(event) {
-          event.preventDefault();
+        <br>
+        <label for="createBio">Biography</label><br>
+        <textarea name="createBio" id="createBio" placeholder="Tell us about yourself"></textarea>
 
-          var outData = {}
+        <br>
+        <input type="submit" id="makeUser" value="Make User" />
+      </form>
 
-          // is usernam
-          outData['username'] = $("#createUsername").val();
-          outData['password'] = $("#createPassword").val();
-          outData['email'] = $("#createEmail").val();
-          outData['name'] = $("#createName").val();
-          outData['bio'] = $("#createBio").val();
+      <script>
+        $(document).ready(function() {
 
-          $.post("ajax.php?action=create_user", outData, function(data) {
-            alert(data);
-          });
-        })
-      })
-    </script>
+          $("#createUserForm").submit(function(event) {
+            event.preventDefault();
+            
+            $.get('ajax.php?action=get_nonce', function(data) {
+              json = $.parseJSON(data);
+              nonce = json.nonce;
 
-    <h2>Create User</h2>
-    <form id="createUser">
-      <label for="createUsername">Username*</label><br>
-      <input type="text" name="createUsername" id="createUsername" placeholder="username" required />
-
-      <br>
-      <label for="createPassword">Password*</label><br>
-      <input type="password" name="createPassword" id="createPassword" required />
-
-      <br>
-      <label for="createEmail">Email Address*</label><br>
-      <input type="email" name="createEmail" id="createEmail" placeholder="you@example.com" required />
-
-      <br>
-      <label for="createName">Real Name</label><br>
-      <input type="text" name="createName" id="createName" placeholder="You" />
-
-      <br>
-      <label for="createBio">Biography</label><br>
-      <textarea name="createBio" id="createBio" placeholder="Tell us about yourself"></textarea>
-
-      <br>
-      <input type="submit" id="makeUser" value="Make User" />
-    </form>
-    <?php endif; ?>
-
-    <h2>Try Logging In</h2>
-    <form id="loginUser">
-      <div id="loginError" class="notice" style="display:none"></div>
-
-      <label for="loginUsername">Username</label><br>
-      <input type="text" name="loginUsername" id="loginUsername" />
-
-      <br>
-      <label for="loginPassword">Password</label><br>
-      <input type="password" name="loginPassword" id="loginPassword" />
-
-      <br>
-      <input type="submit" id="tryLogin" value="Login" />
-    </form>
-
-    <script>
-      $(document).ready(function() {
-        $("#loginUser").submit(function(event) {
-          event.preventDefault();
-
-          $("#tryLogin").val("Working...");
-          $("#tryLogin").attr("disabled", "disabled");
-
-          var outData = {};
-          outData['username'] = $("#loginUsername").val();
-          outData['password'] = $("#loginPassword").val();
-
-          $.post("ajax.php?action=login", outData, function(data) {
-            json = $.parseJSON(data);
-            $("#tryLogin").removeAttr("disabled");
-
-            <?php if (User::isLoggedIn()): ?>
-              if (json.error == null) {
-                $("#tryLogin").val("Login");
-                $("#loginError").text("Login works - you will be that user...");
-                $("#loginError").show()
-              }
-            <?php else: ?>
-              if (json.error == null) {
-                $("#tryLogin").val("Logging In");
-                location.reload();
+              if (nonce === undefined) {
+                $("#createUserNotice").text("Couldn't get nonce");
+                $("#createUserNotice").show();
               }
               else {
-                $("#tryLogin").val("Login");
-                $("#loginError").text(json.error);
-                $("#loginError").show();
-                console.log("error");
-                console.log(json);
-              }
-            <?php endif; ?>
-          });
+                var outData = {}
 
+                // is usernam
+                outData['username'] = $("#createUsername").val();
+                outData['password'] = CryptoJS.SHA256($("#createPassword").val());
+                outData['password'] += CryptoJS.SHA256(nonce);
+                outData['email'] = $("#createEmail").val();
+                outData['name'] = $("#createName").val();
+                outData['bio'] = $("#createBio").val();
+
+                $.post("ajax.php?action=create_user", outData, function(data) {
+                  alert(data);
+                });
+              }
+            })
+
+          })
         })
-      })
-    </script>
-	</div>
+      </script>
+    </div>
+    
+    <div id="showUsers">
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Email Address</th>
+          <th></th>
+        </tr>
+      <?php foreach (User::all() as $user) :?>
+        <tr>
+          <td><?php echo $user->id; ?></td>
+          <td><?php echo $user->username; ?></td>
+          <td><?php echo $user->name; ?></td>
+          <td><?php echo $user->email; ?></td>
+          <td></td>
+        </tr>
+      <?php endforeach; ?>
+      </table>
+    </div>
+    
+    <div id="changePass">
+      <form id="changePassword">
+        <label for="changePassUser">Username</label><br>
+        <select id="changePassUser" name="changePassUser">
+        <?php foreach(User::all() as $user) : ?>
+          <option value="<?php echo $user->id; ?>"><?php echo $user->getName() ?></option>
+        <?php endforeach; ?>
+        </select>
+        <br><br>
+        <label for="changePassPassword">Password</label><br>
+        <input type="password" id="changePassPassword" name="changePassPassword" placeholder="password" />
+        <br><br>
+        <input type="submit" value="Change! That! Password!" />
+      </form> 
+
+      <script>
+        $(document).ready(function() {
+          $("#changePassword").submit(function(event) {
+            event.preventDefault();
+
+            $.get('ajax.php?action=get_nonce', function(data) {
+              json = $.parseJSON(data);
+              nonce = json.nonce;
+
+              if (nonce === undefined) {
+                $("#createUserNotice").text("Couldn't get nonce");
+                $("#createUserNotice").show();
+              }
+              else {
+                var outData = {}
+
+                // is usernam
+                outData['username'] = $("#createUsername").val();
+                outData['password'] += CryptoJS.SHA256(nonce);
+
+                $.post("ajax.php?action=change_password", outData, function(data) {
+                  alert(data);
+                });
+              }
+            })
+          });
+        })
+      </script>
+    </div>
+    
+    <div id="createPost">
+      create post
+    </div>
+    
+    <div id="showPosts">show posts</div>
+  </div>
+
+</section>
+
+<script>
+  $(function() {
+    $("#playground_tabs").tabs();
+  })
+</script>
+
+<?php include_once('theme/footer.php'); ?>
+
+<?php /*
+  
 
 	<div class="right half">
     <?php if (User::isLoggedIn()) :?>
@@ -234,6 +266,6 @@
     </script>
     <?php endif; ?>
 	</div>
-*/ ?>
 </body>
 </html>
+*/ ?>

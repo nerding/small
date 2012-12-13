@@ -103,3 +103,21 @@ section {
       text-decoration: none; }
     #playground_tabs ul li.ui-state-active {
       background: white; }
+
+.admin #loggy-inner {
+  width: 300px;
+  margin: 0 auto; }
+  .admin #loggy-inner img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%; }
+  .admin #loggy-inner input {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 1em;
+    border: 0;
+    border-bottom: 1px solid #d7dbda;
+    padding: 0 2px; }

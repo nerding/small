@@ -162,11 +162,15 @@
     }
 
     public static function find_by_id($id) {
-      return self::find("where id=$id")[0];
+      //return self::find("where id=$id")[0];
+      $in = self::find("where id=$id");
+      return $in[0];
     }
 
     public static function find_by_username($inUser) {
-      return self::find("where username=\"$inUser\"")[0];
+      //return self::find("where username=\"$inUser\"")[0];
+      $in = self::find("where username=\"$inUser\"");
+      return $in[0];
     }
 
     private static function find() {
@@ -182,7 +186,7 @@
       while ($stmt->fetch()) {
         array_push($out, new DBUser($id, $username, $email, $name, $biography));
       }
-
+      
       return $out;
 
     }

@@ -6,7 +6,7 @@
   $header = Config::get('site.name') . "::playground";
   $showLogin = true;
 
-  include_once('theme/header.php');
+  include('theme/header.php');
 ?>
 
 <section>
@@ -126,6 +126,8 @@
             $.get('ajax.php?action=get_nonce', function(data) {
               json = $.parseJSON(data);
               nonce = json.nonce;
+              console.log(json);
+              console.log(nonce);
 
               if (nonce === undefined) {
                 $("#createUserNotice").text("Couldn't get nonce");
@@ -135,8 +137,11 @@
                 var outData = {}
 
                 // is usernam
-                outData['username'] = $("#createUsername").val();
+                outData['username'] = $("#changePassUser").val();
+                outData['password'] = CryptoJS.SHA256($("#changePassPassword").val());
                 outData['password'] += CryptoJS.SHA256(nonce);
+                
+                console.log(outData);
 
                 $.post("ajax.php?action=change_password", outData, function(data) {
                   alert(data);
@@ -163,7 +168,7 @@
   })
 </script>
 
-<?php include_once('theme/footer.php'); ?>
+<?php include('theme/footer.php'); ?>
 
 <?php /*
   

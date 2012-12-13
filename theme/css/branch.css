@@ -76,3 +76,30 @@ footer {
     text-align: center;
     font-size: .8em;
     color: #a1aaa9; }
+
+section {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+#playground_tabs ul {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  border-bottom: 3px solid #d7dbda;
+  list-style: none;
+  display: table;
+  margin: 20px 0;
+  padding: 0; }
+  #playground_tabs ul li {
+    float: left;
+    display: inline;
+    margin-right: 20px;
+    background: #f2f3f3; }
+    #playground_tabs ul li a {
+      display: block;
+      padding: 10px;
+      border: 1px solid #d7dbda;
+      border-bottom: 0px;
+      text-decoration: none; }
+    #playground_tabs ul li.ui-state-active {
+      background: white; }

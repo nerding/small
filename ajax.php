@@ -2,6 +2,9 @@
   ob_start('gzheader');
   require_once('branch/branch.php');
   
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+  
 	if (isset($_GET['action'])) {
 		// create a user
     if ($_GET['action'] == 'create_user') {
@@ -163,7 +166,11 @@
         $pass = substr($passIn, 0, 64);
 
         if ($nonce != hash('sha256', $_SESSION['nonce'])) {
-          echo '{"error" : "incorrect nonce"}';
+          echo '{' . "\n\t\"error\" : \"incorrect nonce\",";
+          echo "\n\t\"client\" : \"$nonce\", \n\t\"server\" : \"";
+          echo hash('sha256', $_SESSION['nonce']);
+          echo '"\n}';
+          //echo '{"error" : "incorrect nonce", "cNonce" : "' . $nonce '", "sNonce": "' . hash('sha256', $_SESSION['nonce']) . '"}';
           return;
         }
 
@@ -176,7 +183,33 @@
       echo '{"error": "function not implemented yet"}';
       return;
     }
-	}
+
+    // get users in json string
+    else if ($_GET['action'] == 'get_users') {
+      echo '{';
+
+      $i = 0;
+      foreach (User::all() as $user) {
+        $i++;
+        echo "\n\t\"{$user->username}\": {";
+        echo "\n\t\t\"id\": \"{$user->id}\", ";
+        echo "\n\t\t\"username\": \"{$user->username}\", ";
+        echo "\n\t\t\"email\": \"{$user->email}\", ";
+        echo "\n\t\t\"name\": \"{$user->name}\", ";
+        echo "\n\t\t\"biography\": \"{$user->biography}\"";
+        echo "\n\t}";
+
+        if ($i != count(User::all())) {
+          echo ',';
+        }
+
+        echo "\n";
+      }
+
+      echo '}';
+      return;
+    }
+  }
 	else {
 		echo "{'error': 'No action'}";
 	}

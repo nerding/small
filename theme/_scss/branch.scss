@@ -115,3 +115,39 @@ footer {
     color: darken($lightgray, 20%);
   }
 }
+
+section {
+  @include iebox;
+}
+
+#playground_tabs {
+  ul {
+    @include iebox;
+    width:100%;
+    border-bottom:3px solid $lightgray;
+
+    list-style:none;
+    display:table;
+    margin:20px 0;
+    padding:0;
+
+    li {
+      float:left;
+      display:inline;
+      margin-right:20px;
+      background:lighten($lightgray, 10%);
+
+      a {
+        display:block;
+        padding:10px;
+        border:1px solid $lightgray;
+        border-bottom:0px;
+        text-decoration:none;
+      }
+
+      &.ui-state-active {
+        background:white;
+      }
+    }
+  }
+}

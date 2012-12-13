@@ -15,7 +15,9 @@
     }
 
     public static function find_by_id($id) {
-      return self::find("where id=$id")[0];
+      //return self::find("where id=$id")[0];
+      $in = self::find("where id=$id");
+      return $in[0];
     }
 
     /*

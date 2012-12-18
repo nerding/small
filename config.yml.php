@@ -1,3 +1,5 @@
+<?php
+
 # config file
 # 
 # contains basic configuration settings and such
@@ -17,3 +19,5 @@ site:
   # by hand. For now, just pick some random string. It'll be fun, I
   # promise...
   salt: branchSalt_$@?!=/>wordup
+
+#?>

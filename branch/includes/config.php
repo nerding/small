@@ -6,7 +6,12 @@
     private static $config;
 
     public static function init() {
-      self::$config = Spyc::YAMLLoad(__dir__ . "/../../config.yml");
+      $configContents = file_get_contents(__dir__ . '/../../config.yml.php');
+      $contentsArr = explode("<?php\n", $configContents);
+      $yaml = $contentsArr[1];
+      self::$config = Spyc::YAMLLoad($yaml);
+
+      //self::$config = Spyc::YAMLLoad(__dir__ . "/../../config.yml.php");
     }
 
     public static function getConfig() {

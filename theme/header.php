@@ -1,5 +1,5 @@
 <?php 
-  require_once(__dir__ . '../../branch/branch.php'); 
+  require_once(__dir__ . '../../small/small.php'); 
 
   $title = (isset($title) ? $title . " | " : "") . Config::get('site.name');
   $header = (isset($header) ? $header : Config::get('site.name'));

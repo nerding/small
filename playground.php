@@ -1,6 +1,6 @@
 <?php
 	ob_start('gzheader');
-  require_once('branch/branch.php');
+  require_once('small/small.php');
 
   $title = "playground";
   $header = Config::get('site.name') . "::playground";

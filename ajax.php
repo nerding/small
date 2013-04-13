@@ -1,6 +1,6 @@
 <?php
   ob_start('gzheader');
-  require_once('branch/branch.php');
+  require_once('small/small.php');
   
   error_reporting(E_ALL);
   ini_set('display_errors','On');

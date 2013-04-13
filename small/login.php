@@ -1,6 +1,6 @@
 <?php
 
-	require_once( dirname(__FILE__) . '/branch.php');
+	require_once( dirname(__FILE__) . '/small.php');
 
 ?>
 <!DOCTYPE html>

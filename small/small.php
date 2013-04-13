@@ -9,7 +9,7 @@
   date_default_timezone_set('UTC');
 
 
-  // require all of the branch classes
+  // require all of the small classes
   require_once(__dir__ . '/includes/config.php');
   require_once(__dir__ . '/includes/small_db.php');
   require_once(__dir__ . '/includes/session.php');

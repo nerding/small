@@ -1,5 +1,5 @@
 <?php
-  require_once('branch/branch.php');
+  require_once('small/small.php');
 ?>
 
 <!DOCTYPE html>

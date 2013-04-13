@@ -6,18 +6,19 @@
 ---
 
 db:
-	user: root
-	password: ''
-	host: localhost
-	database: branch
+	user: "root"
+	password: ""
+	host: "localhost"
+	database: "small"
 
 site:
-  name: "Branch Test"
-  url: http://localhost/~don/branch
+  name: "Small Playground"
+  url: "http://localhost/~don/small"
+
   # a random salting string. Eventually, when this config file gets 
   # generated in the install, this should be done by that, and not
   # by hand. For now, just pick some random string. It'll be fun, I
   # promise...
-  salt: branchSalt_$@?!=/>wordup
+  salt: "smallSalt_$@?!=/>wordup"
 
 #?>

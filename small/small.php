@@ -11,7 +11,7 @@
 
   // require all of the branch classes
   require_once(__dir__ . '/includes/config.php');
-  require_once(__dir__ . '/includes/branch_db.php');
+  require_once(__dir__ . '/includes/small_db.php');
   require_once(__dir__ . '/includes/session.php');
   require_once(__dir__ . '/includes/user.php');
   require_once(__dir__ . '/includes/post.php');

@@ -1,5 +1,5 @@
 <?php
-  ob_start('gzheader');
+  //ob_start('gzheader');
   require_once('small/small.php');
   
   error_reporting(E_ALL);

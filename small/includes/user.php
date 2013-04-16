@@ -59,9 +59,9 @@
       // close up the query's string.
       $query .= ');';
 
-      // the BranchDB class automatically prepares our query,
+      // the SmallDB class automatically prepares our query,
       // so we don't have to do anything to make it work.
-      $out = BranchDB::query($query);
+      $out = SmallDB::query($query);
 
       if ($out != false) {
         return true;
@@ -74,7 +74,7 @@
     public static function validatePassword($username, $password) {
       $query = "select password from users where username = \"$username\";";
 
-      $stmt = BranchDB::queryStmt($query);
+      $stmt = SmallDB::queryStmt($query);
       $stmt->bind_result($hashword);
       $stmt->fetch();
       $stmt->close();
@@ -132,7 +132,7 @@
       $hash = self::gimmieHash($salt, $password);
 
       $query = "update users set password = \"$hash\" where id = {$user->id};";
-      BranchDB::query($query);
+      SmallDB::query($query);
     }
 
     public static function current() {
@@ -180,7 +180,7 @@
       $query .= ';';
 
       $out = array();
-      $stmt = BranchDB::queryStmt($query);
+      $stmt = SmallDB::queryStmt($query);
 
       $stmt->bind_result($id, $username, $email, $name, $biography);
       while ($stmt->fetch()) {
@@ -242,6 +242,16 @@
       $url .= '?s=50&d=identicon';
 
       echo $url;
+    }
+
+    public function save() {
+      $query = "update users set username = '" . $this->username . "', ";
+      $query .= "email = '" . $this->email . "', ";
+      $query .= "name = '" . $this->name . "', ";
+      $query .= "biography = '" . $this->biography . "' ";
+      $query .= "where id = " . $this->id . ";";
+
+      SmallDB::query($query);
     }
   }
 

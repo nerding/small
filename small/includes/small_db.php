@@ -1,6 +1,6 @@
 <?php
 
-  class BranchDB { 
+  class SmallDB { 
     private static $db;
 
     public static function init() {
@@ -26,7 +26,7 @@
         return $out;
       }
 
-      echo "BranchDB::query\n";
+      echo "SmallDB::query\n";
       echo self::$db->error;
       return false;
     }
@@ -39,12 +39,12 @@
         return $stmt;
       }
 
-      echo "BranchDB::queryStmt\n";
+      echo "SmallDB::queryStmt\n";
       echo self::$db->error;
       return false;
     }
 
   }
-  BranchDB::init();
+  SmallDB::init();
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-	ob_start('gzheader');
+	//ob_start('gzheader');
   require_once('small/small.php');
 
   $title = "playground";
@@ -97,10 +97,23 @@
           <td><?php echo $user->username; ?></td>
           <td><?php echo $user->name; ?></td>
           <td><?php echo $user->email; ?></td>
-          <td></td>
+          <td>
+            <button class="delete-user" data-user="<?php echo $user->id; ?>" data-name="<?php echo $user->name; ?>">
+              Delete
+            </button>
+          </td>
         </tr>
       <?php endforeach; ?>
       </table>
+
+      <script>
+          $(".delete-user").click(function(event) {
+            event.preventDefault();
+
+            confDelete = confirm("Are you sure you want to delete " + $(this).attr('data-name') + "?");
+            console.log(confDelete)
+          });
+      </script>
     </div>
     
     <div id="changePass">

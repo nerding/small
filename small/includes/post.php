@@ -23,15 +23,15 @@
     /*
       Takes in 0 or 1 params: a where clause (including the "where" part).
     */
-    private static function find() {
+    public static function find() {
       $num_args = func_get_args();
 
       $query = 'select id,title,published,pub_date,contents,author_id';
-      $query .= 'from posts';
+      $query .= ' from posts';
       $query .= count($num_args) == 1 ? ' ' . func_get_arg(0) : '';
       $query .= ' order by pub_date;';
 
-      $stmt = BranchDB::queryStmt($query);
+      $stmt = SmallDB::queryStmt($query);
 
       $out = array();
       $stmt->bind_result(
@@ -94,11 +94,11 @@
       $query .= $pub_date->format('Y-m-d H:i:00');
       $query .= "\", \"$file\", $author_id);";
 
-      BranchDB::query($query);
+      SmallDB::query($query);
 
       $findQuery = 'select id from posts';;
       $findQuery .= "where title = \"$title\" and contents = \"$file\";";
-      $stmt = BranchDB::queryStmt($findQuery);
+      $stmt = SmallDB::queryStmt($findQuery);
       $stmt->bind_result($id);
       $stmt->fetch();
       $stmt->close();
@@ -134,7 +134,7 @@
 
     public static function delete($id) {
       $findQuery = "select contents from posts where id=$id;";
-      $findStmt = BranchDB::queryStmt($findQuery);
+      $findStmt = SmallDB::queryStmt($findQuery);
       $findStmt->bind_result($filename);
       $findStmt->fetch();
 
@@ -143,7 +143,7 @@
 
       $query = "delete from posts where id=$id;";
       //echo $query;
-      BranchDB::query($query);
+      SmallDB::query($query);
     }
 
   }

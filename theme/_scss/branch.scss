@@ -1,179 +1,28 @@
-@import "../fonts/geared/stylesheet.css";
-@import "http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,400italic,600italic|Source+Code+Pro";
+@import "../fonts/bitter/stylesheet.css";
+@import "../fonts/serfifbeta/stylesheet.css";
 
-$lightgray: hsl(170, 5%, 85%);
-$medgray: hsla(170, 5%, 65%, 0.4);
+
+$font-body:   "Serif12", "PT Serif", "Droid Serif", serif;
+$font-title:  Bitter, $font-body;
+$font-size:   18px;
+$line-height: 1.5em;
+
 
 @mixin iebox {
   -moz-box-sizing:border-box;
   box-sizing:border-box;
 }
 
-
 body {
-  background:url(../img/gray_jean.png);
-  font-family: "Source Sans Pro",  sans-serif;
+  font-family: $font-body;
+  font-size: $font-size;
+  line-height: $line-height;
 }
 
-h1, h2, h3, h4 {
-  font-family: "Geared Slab", "Source Sans Pro", sans-serif;
-}
-
-.left {
-  float:left;
-}
-
-.right {
-  float:right;
-}
-
+h1 { font-size: 3em; line-height: 1em;}
+h2 { font-size: 2em; }
 
 .wrap {
-  @include iebox;
-
-  background:white;
-  width:800px;
-  margin:50px auto;
-  padding:0 20px;
-
-  border:1px solid $lightgray;
-  box-shadow:3px 3px 3px $medgray;
-}
-
-header {
-  padding:25px 0;
-  clear:both;
-
-  display:table;
-  width:760px;
-  margin-left:-20px;
-  padding:20px;
-
-  border-bottom:1px solid $lightgray;
-
-  h1 {
-    float:left;
-    //width:65%;
-    margin:0;
-    font-size:40px;
-    height:50px;
-    line-height:50px;
-
-    //text-align:center;
-  }
-
-
-  .user {
-    height:50px;
-    float:right;
-    width:35%;
-
-    p {
-      margin:0;
-      text-align:right;
-      line-height:25px;
-    }
-
-    img.right {
-      height:50px; width:50px;
-      -moz-border-radius:50%;
-      border-radius:50%;
-      margin-left:20px;
-    }
-  }
-
-  .login {
-    float:right;
-    width:25%;
-    height:50px;
-
-    input {
-      @include iebox;
-
-      width:100%;
-      height:23px;
-      margin-bottom:2px;
-      border:0;
-      border-bottom:1px solid $lightgray;
-      padding:0 2px;
-    }
-  }
-}
-
-footer {
-  clear:both;
-  border-top:1px solid $lightgray;
-
-  width:100%;
-  margin-left:-20px;
-  margin-top:20px;
-  padding:20px;
-
-  p {
-    text-align:center;
-    font-size:.8em;
-    color: darken($lightgray, 20%);
-  }
-}
-
-section {
-  @include iebox;
-}
-
-#playground_tabs {
-  ul {
-    @include iebox;
-    width:100%;
-    border-bottom:3px solid $lightgray;
-
-    list-style:none;
-    display:table;
-    margin:20px 0;
-    padding:0;
-
-    li {
-      float:left;
-      display:inline;
-      margin-right:20px;
-      background:lighten($lightgray, 10%);
-
-      a {
-        display:block;
-        padding:10px;
-        border:1px solid $lightgray;
-        border-bottom:0px;
-        text-decoration:none;
-      }
-
-      &.ui-state-active {
-        background:white;
-      }
-    }
-  }
-}
-
-.admin {
-  #loggy-inner {
-    width:300px;
-    margin:0 auto;
-
-    img {
-      display:block;
-      margin:0 auto;
-      border-radius:50%;
-    }
-
-    input {
-      @include iebox;
-
-      width: 100%;
-      font-size:1.2em;
-      text-align:center;
-
-      margin-bottom:1em;
-      border:0;
-      border-bottom:1px solid $lightgray;
-      padding:0 2px;
-    }
-  }
+  width: 800px;
+  margin: 0 auto;
 }

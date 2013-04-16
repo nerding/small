@@ -84,7 +84,7 @@
     <div id="error" style="display:none;"></div>
 
     <header>
-      <h1><?php echo $header ?></h1>
+      <div class="logo"><?php echo $header ?></div>
 
     <?php if ($showLogin) :?>
       <?php if(User::isLoggedIn()):?>

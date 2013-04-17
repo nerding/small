@@ -9,7 +9,7 @@ db:
 	user: "root"
 	password: ""
 	host: "localhost"
-	database: "branch"
+	database: "small"
 
 site:
   name: "Small Playground"
@@ -19,6 +19,6 @@ site:
   # generated in the install, this should be done by that, and not
   # by hand. For now, just pick some random string. It'll be fun, I
   # promise...
-  salt: "branchSalt_$@?!=/>wordup"
+  salt: "smallSalt_$@?!=/>wordup"
 
 #?>

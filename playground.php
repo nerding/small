@@ -3,7 +3,7 @@
   require_once('small/small.php');
 
   $title = "playground";
-  $header = Config::get('site.name') . "::playground";
+  //$header = Config::get('site.name') . "::playground";
   $showLogin = true;
 
   include('theme/header.php');
@@ -23,19 +23,15 @@
     <div id="createUser">
       <div id="createUserNotice" style="display:none;"></div>
       <form id="createUserForm">
-        <label for="createUsername">Username*</label><br>
-        <input type="text" name="createUsername" id="createUsername" placeholder="username" required />
+        <label for="createEmail">Email Address*</label><br>
+        <input type="email" name="createEmail" id="createEmail" placeholder="you@example.com" required />
 
         <br>
         <label for="createPassword">Password*</label><br>
         <input type="password" name="createPassword" id="createPassword" required />
 
         <br>
-        <label for="createEmail">Email Address*</label><br>
-        <input type="email" name="createEmail" id="createEmail" placeholder="you@example.com" required />
-
-        <br>
-        <label for="createName">Real Name</label><br>
+        <label for="createName">Display Name</label><br>
         <input type="text" name="createName" id="createName" placeholder="You" />
 
         <br>
@@ -64,10 +60,9 @@
                 var outData = {}
 
                 // is usernam
-                outData['username'] = $("#createUsername").val();
+                outData['email'] = $("#createEmail").val();
                 outData['password'] = CryptoJS.SHA256($("#createPassword").val());
                 outData['password'] += CryptoJS.SHA256(nonce);
-                outData['email'] = $("#createEmail").val();
                 outData['name'] = $("#createName").val();
                 outData['bio'] = $("#createBio").val();
 
@@ -86,17 +81,15 @@
       <table>
         <tr>
           <th>ID</th>
-          <th>Username</th>
-          <th>Name</th>
           <th>Email Address</th>
+          <th>Display Name</th>
           <th></th>
         </tr>
       <?php foreach (User::all() as $user) :?>
         <tr>
           <td><?php echo $user->id; ?></td>
-          <td><?php echo $user->username; ?></td>
-          <td><?php echo $user->name; ?></td>
           <td><?php echo $user->email; ?></td>
+          <td><?php echo $user->name; ?></td>
           <td>
             <button class="delete-user" data-user="<?php echo $user->id; ?>" data-name="<?php echo $user->name; ?>">
               Delete
@@ -118,10 +111,10 @@
     
     <div id="changePass">
       <form id="changePassword">
-        <label for="changePassUser">Username</label><br>
+        <label for="changePassUser">Email Address</label><br>
         <select id="changePassUser" name="changePassUser">
         <?php foreach(User::all() as $user) : ?>
-          <option value="<?php echo $user->id; ?>"><?php echo $user->getName() ?></option>
+          <option value="<?php echo $user->id; ?>"><?php echo $user->email ?></option>
         <?php endforeach; ?>
         </select>
         <br><br>

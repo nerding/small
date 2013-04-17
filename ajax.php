@@ -9,9 +9,8 @@
 		// create a user
     if ($_GET['action'] == 'create_user') {
 			if (
-				isset($_POST['username']) && 
-				isset($_POST['password']) && 
 				isset($_POST['email']) &&
+        isset($_POST['password']) && 
         isset($_SESSION['nonce'])
 			) {
 
@@ -28,9 +27,8 @@
         if (!isset($_POST['name'])) { $_POST['name'] = ""; }
         if (!isset($_POST['bio'])) { $_POST['bio'] = ""; }
         User::create(
-            filter_input(INPUT_POST, 'username'), 
-            $pass, 
             filter_input(INPUT_POST, 'email'), 
+            $pass, 
             filter_input(INPUT_POST, 'name'), 
             filter_input(INPUT_POST, 'bio')
         );
@@ -51,7 +49,7 @@
 
     // logging in
     else if ($_GET['action'] == 'login') {
-      if (isset($_POST['username']) && isset($_POST['password'])) {
+      if (isset($_POST['email']) && isset($_POST['password'])) {
         if (!isset($_SESSION['nonce'])) {
           echo '{"error": "no nonce on server"}';
           return;
@@ -68,14 +66,14 @@
           }
 
           if (User::login(
-            filter_input(INPUT_POST, 'username'),
+            filter_input(INPUT_POST, 'email'),
             $pass
           )) {
             echo '{"error": null, "notice": "You are being logged in"}';
             return;
           }
 
-          echo '{"error": "Incorrect username/password combo"}';
+          echo '{"error": "Incorrect email/password combo"}';
           return;
         }
       }

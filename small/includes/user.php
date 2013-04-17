@@ -6,9 +6,9 @@
     /*
       Create a new user.
   
-      User.new($username, $password, $email [, $name [, $biography]])
+      User.new($email, $password [, $name [, $biography]])
     */
-    public static function create($username, $password, $email) {
+    public static function create($email, $password) {
       $num_args = func_get_args();
 
       // default these to null
@@ -17,17 +17,17 @@
 
       // if they're passed in, and if they're not empty,
       // use them
-      if ($num_args >= 4 && func_get_arg(3) != '') {
-        $name = func_get_arg(3);
+      if ($num_args >= 3 && func_get_arg(2) != '') {
+        $name = func_get_arg(2);
       }
-      if ($num_args == 5 && func_get_arg(4) != '') {
-        $biography = func_get_arg(4);
+      if ($num_args == 4 && func_get_arg(3) != '') {
+        $biography = func_get_arg(3);
       }
 
       // generate the unique salt for this user
-      // based on the current time and their username
+      // based on the current time and their email address
       // fun stuff...
-      $salt = hash('sha256', uniqid(mt_rand(), true) . Config::get('site.salt') . strtolower($username));
+      $salt = hash('sha256', uniqid(mt_rand(), true) . Config::get('site.salt') . strtolower($email));
 
       // create a hash based on the salt and password.
       // this is a method because eventually we'll grab the
@@ -36,7 +36,7 @@
       $hash = self::gimmieHash($salt, $password);
 
       // start the query. We know that these three are required
-      $query = 'insert into users (username, password, email';
+      $query = 'insert into users (email, password';
 
       // if we have the other two non required fields
       if ($name != NULL) {
@@ -47,13 +47,13 @@
       }
 
       // again, these are the required fields
-      $query .= ") values ('$username', '$hash', '$email'";
+      $query .= ") values (\"$email\", \"$hash\"";
 
       if ($name != NULL) {
-        $query .= ", '$name'";
+        $query .= ", \"$name\"";
       }
       if ($biography != NULL) {
-        $query .= ", '$biography'";
+        $query .= ", \"$biography\"";
       }
 
       // close up the query's string.
@@ -71,8 +71,8 @@
       }
     }
 
-    public static function validatePassword($username, $password) {
-      $query = "select password from users where username = \"$username\";";
+    public static function validatePassword($email, $password) {
+      $query = "select password from users where email = \"$email\";";
 
       $stmt = SmallDB::queryStmt($query);
       $stmt->bind_result($hashword);
@@ -94,12 +94,12 @@
       return false;
     }
 
-    public static function login($username, $password) {
-      if (!self::validatePassword($username, $password)) {
+    public static function login($email, $password) {
+      if (!self::validatePassword($email, $password)) {
         return false;
       } 
       
-      $user = self::find_by_username($username);
+      $user = self::find_by_email($email);
 
 
       if ($user == false) {
@@ -108,7 +108,7 @@
 
       Session::start();
       Session::set('id', $user->id);
-      Session::set('username', $user->username);
+      Session::set('email', $user->email);
 
       if (isset($user->name)) {
         Session::set('name', $user->name);
@@ -125,10 +125,10 @@
       return Session::hasSession();
     }
 
-    public static function changePassword($username, $password) {
-      $user = self::find_by_id($username);
+    public static function changePassword($email, $password) {
+      $user = self::find_by_id($email);
 
-      $salt = hash('sha256', uniqid(mt_rand(), true) . Config::get('site.salt') . strtolower($username));
+      $salt = hash('sha256', uniqid(mt_rand(), true) . Config::get('site.salt') . strtolower($email));
       $hash = self::gimmieHash($salt, $password);
 
       $query = "update users set password = \"$hash\" where id = {$user->id};";
@@ -167,24 +167,23 @@
       return $in[0];
     }
 
-    public static function find_by_username($inUser) {
-      //return self::find("where username=\"$inUser\"")[0];
-      $in = self::find("where username=\"$inUser\"");
+    public static function find_by_email($inUser) {
+      $in = self::find("where email=\"$inUser\"");
       return $in[0];
     }
 
     private static function find() {
       $num_args = func_get_args();
-      $query = 'select id,username,email,name,biography from users';
+      $query = 'select id,email,name,biography from users';
       $query .= $num_args == 1 ? ' ' . func_get_arg(0) : '';
       $query .= ';';
 
       $out = array();
       $stmt = SmallDB::queryStmt($query);
 
-      $stmt->bind_result($id, $username, $email, $name, $biography);
+      $stmt->bind_result($id, $email, $name, $biography);
       while ($stmt->fetch()) {
-        array_push($out, new DBUser($id, $username, $email, $name, $biography));
+        array_push($out, new DBUser($id, $email, $name, $biography));
       }
       
       return $out;
@@ -195,7 +194,6 @@
 
   class DBUser {
     public $id;
-    public $username;
     public $email;
     public $name;
     public $biography;
@@ -206,7 +204,7 @@
 
       Should only be called using the Users class find_by functions
 
-      new DBUser([id [, username [, email [, full name [, biography]]]]])
+      new DBUser([id [, email [, full name [, biography]]]])
     */
     public function DBUser() {
       $numArgs = func_get_args();
@@ -215,21 +213,18 @@
         $this->id = func_get_arg(0);
       }
       if ($numArgs >= 2) {
-        $this->username = func_get_arg(1);
+        $this->email = func_get_arg(1);
       }
       if ($numArgs >= 3) {
-        $this->email = func_get_arg(2);
+        $this->name = func_get_arg(2);
       }
-      if ($numArgs >= 4) {
-        $this->name = func_get_arg(3);
-      }
-      if ($numArgs == 5) {
-        $this->biography = func_get_arg(4);
+      if ($numArgs == 4) {
+        $this->biography = func_get_arg(3);
       }
     }
 
     public function getName() {
-      return isset($this->name) && $this->name != "" ? $this->name : $this->username;
+      return $this->name;
     }
 
     public function printName() {
@@ -237,15 +232,19 @@
     }
 
     public function gravatarURL() {
+
+      $size = 50;
+      if (func_get_args() == 1) { $size = func_get_arg(0); }
+
       $url = 'http://gravatar.com/avatar/';
       $url .= md5($this->email);
-      $url .= '?s=50&d=identicon';
+      $url .= "?s=$size&d=identicon";
 
       echo $url;
     }
 
     public function save() {
-      $query = "update users set username = '" . $this->username . "', ";
+      $query = "update users set ";
       $query .= "email = '" . $this->email . "', ";
       $query .= "name = '" . $this->name . "', ";
       $query .= "biography = '" . $this->biography . "' ";

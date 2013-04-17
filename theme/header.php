@@ -49,7 +49,7 @@
           }
           else {
             var outData = {};
-            outData['username'] = $("#loginUsername").val();
+            outData['email'] = $("#loginEmail").val();
             outData['password'] = CryptoJS.SHA256($("#loginPassword").val());
             outData['password'] += CryptoJS.SHA256(nonce);
 
@@ -59,7 +59,7 @@
                 location.reload();
               }
               else {
-                $("#error").text("Incorrect username/password combination");
+                $("#error").text("Incorrect email/password combination");
                 $("#error").show();
                 clearLogin();
               }
@@ -72,7 +72,7 @@
     });
 
     function clearLogin() {
-      $("#loginUsername").val("");
+      $("#loginEmail").val("");
       $("#loginPassword").val("");
       $("#loginForm").effect('shake', {times: 2, distance:10}, 500);
     }
@@ -98,7 +98,7 @@
       <?php else: ?>
         <div class="login">
           <form id="loginForm">
-            <input type="text" id="loginUsername" placeholder="username"><br>
+            <input type="text" id="loginEmail" placeholder="email address"><br>
             <input type="password" id="loginPassword" placeholder="password">
             <input type="submit" style="visibility:hidden;">
           </form>

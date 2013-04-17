@@ -1,30 +1,46 @@
 <?php
+	require_once( __dir__ . '/small.php');
 
-	require_once( dirname(__FILE__) . '/small.php');
-
+	include( __dir__ . '/../theme/head.php');
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Login | <?php echo Config::get('site.name'); ?></title>
 
-	<link rel="stylesheet" href="<?php echo Config::get('site.url'); ?>/theme/css/branch.css" />
-</head>
-<body class="admin">
-	<div class="wrap">
-		<header>
-			<h1><?php echo Config::get('site.name'); ?> :: login</h1>
-		</header>
+<section class="login-page">
+	<h1>Login</h1>
 
-		<section>
-			<form id="loggy-inner">
-				<img src="http://placehold.it/200x200"><br>
+	<img id="gravatar" src="http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?d=identicon&s=150">
 
-				<input id="username" name="username" placeholder="username"><br>
-				<input id="password" name="password" placeholder="password">
-			</form>
-		</section>
+	<form id="login">
+		<input type="text" id="loginEmail" placeholder="email address"><br>
+		<input type="password" id="loginPassword" placeholder="password">
+		<input type="submit" style="visibility:hidden;">
+	</form>
+</section>
 
-<?php
-	include ( dirname(__FILE__) . '/../theme/footer.php' );
-?>
+<script>
+	$gravurl = "http://www.gravatar.com/avatar/";
+	$gravflags = "?d=identicon&s=150";
+
+	// whenever the loginEmail input gets changed, change the gravatar to match
+	// this requires the md5 library from crypto.
+	$("#loginEmail").change(function(event) {
+		$grav = $gravurl + md5($(this).val()) + $gravflags;
+
+		// provided it's not the same thing right now...
+		if ($grav != $("#gravatar").attr('src')) {
+			$("#gravatar").attr('src', $grav);
+		}
+	})
+
+
+	// hijack the login form so that we can do some fancy stuff.
+	// because fancy is cool.
+	$("#login").submit(function(event) {
+		event.preventDefault();
+
+		var tryLogin = attemptLogin($("#loginEmail").val(), $("#loginPassword").val());
+		//alert(tryLogin);
+		if (tryLogin) {
+			location.href = "<?php echo Config::get('site.url'); ?>/small/";
+		}
+	})
+</script>

@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="<?php echo Config::get('site.url'); ?>/theme/css/branch.css">
 
   <script src="<?php echo Config::get('site.url'); ?>/theme/js/sha256.js"></script>
+  <script src="<?php echo Config::get('site.url'); ?>/theme/js/md5.min.js"></script>
   <script src="<?php echo Config::get('site.url'); ?>/theme/js/jquery-1.8.3.min.js"></script>
   <script src="<?php echo Config::get('site.url'); ?>/theme/js/jqui/js/jquery-ui-1.9.2.custom.min.js"></script>
 
@@ -55,6 +56,8 @@
 
             $.post("ajax.php?action=login", outData, function(data) {
               json = $.parseJSON(data);
+              console.log(json); // debug
+
               if (json.error == null) {
                 location.reload();
               }

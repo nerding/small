@@ -1,9 +1,11 @@
 @import "../fonts/bitter/stylesheet.css";
 @import "../fonts/serfifbeta/stylesheet.css";
+@import "../fonts/sourcecodepro/stylesheet.css";
 
 
-$font-body:   "Serif12", "PT Serif", "Droid Serif", serif;
-$font-title:  Bitter, $font-body;
+$font-body:   "serif12", "PT Serif", "Droid Serif", serif;
+$font-title:  "serif72", $font-body;
+$font-mono:   "Source Code Pro", Cousine, "Droid Sans Mono", monospace;
 $font-size:   18px;
 $line-height: 1.5em;
 
@@ -19,10 +21,36 @@ body {
   line-height: $line-height;
 }
 
+h1, h2 { font-family: $font-title; }
 h1 { font-size: 3em; line-height: 1em;}
 h2 { font-size: 2em; }
 
 .wrap {
   width: 800px;
   margin: 0 auto;
+}
+
+
+.login-page {
+  width: 340px;
+  margin: 4em auto 0;
+
+  h1 { font-weight: 900; text-align: center; }
+  input { width: 150px; margin-top: 1em; }
+  img { 
+    border-radius: 50%; 
+    border: 5px solid black; 
+    margin-bottom: 2em; 
+    //margin-top: -35px;
+    float: left; 
+}
+
+  #login {
+    margin-top: 35px;
+    //height: 160px;
+    //line-height: 160px;
+    //vertical-align: center;
+    float: right;
+    width: 160px;
+  }
 }

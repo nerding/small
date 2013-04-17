@@ -129,7 +129,7 @@
          url('serif72beta-black-webfont.woff') format('woff'),
          url('serif72beta-black-webfont.ttf') format('truetype'),
          url('serif72beta-black-webfont.svg#serif72_betablack') format('svg');
-    font-weight: black;
+    font-weight: 900;
     font-style: normal;
 
 }
@@ -174,7 +174,7 @@
          url('serif72beta-blackitalic-webfont.woff') format('woff'),
          url('serif72beta-blackitalic-webfont.ttf') format('truetype'),
          url('serif72beta-blackitalic-webfont.svg#serif72_betablack_italic') format('svg');
-    font-weight: black;
+    font-weight: 900;
     font-style: italic;
 
 }

@@ -1,9 +1,13 @@
 @import url(../fonts/bitter/stylesheet.css);
 @import url(../fonts/serfifbeta/stylesheet.css);
+@import url(../fonts/sourcecodepro/stylesheet.css);
 body {
-  font-family: "Serif12", "PT Serif", "Droid Serif", serif;
+  font-family: "serif12", "PT Serif", "Droid Serif", serif;
   font-size: 18px;
   line-height: 1.5em; }
+
+h1, h2 {
+  font-family: "serif72", "serif12", "PT Serif", "Droid Serif", serif; }
 
 h1 {
   font-size: 3em;
@@ -15,3 +19,22 @@ h2 {
 .wrap {
   width: 800px;
   margin: 0 auto; }
+
+.login-page {
+  width: 340px;
+  margin: 4em auto 0; }
+  .login-page h1 {
+    font-weight: 900;
+    text-align: center; }
+  .login-page input {
+    width: 150px;
+    margin-top: 1em; }
+  .login-page img {
+    border-radius: 50%;
+    border: 5px solid black;
+    margin-bottom: 2em;
+    float: left; }
+  .login-page #login {
+    margin-top: 35px;
+    float: right;
+    width: 160px; }

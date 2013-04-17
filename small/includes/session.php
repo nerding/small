@@ -1,4 +1,15 @@
 <?php
+  /*  Session Abstraction
+        Because I like abstractions, even if they only make something
+        slightly easier to use. Being easier to use is nicer.
+
+        It abstracts out PHP's session api in a manner similar to the
+        Config object.
+
+        Yeah... Most of this stuff is self-explainitory and easy to
+        figure out.
+  */
+
   session_start();
   
   class Session {
@@ -31,10 +42,7 @@
     }
 
     public static function get($key) {
-      if (!self::hasSession()) {
-        return false;
-      }
-
+      if (!self::hasSession()) { return false; }
       return $_SESSION[$key];
     }
 
@@ -43,7 +51,8 @@
         return false;
       }
 
-      $fingerprint = Config::get('site.salt') . $_SERVER['HTTP_USER_AGENT'] . session_id();
+      $fingerprint = Config::get('site.salt') . 
+                      $_SERVER['HTTP_USER_AGENT'] . session_id();
 
       return $_SESSION['fingerprint'] == md5($fingerprint);
     }

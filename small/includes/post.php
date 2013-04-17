@@ -1,10 +1,23 @@
 <?php
+  /*  The Post Objects
+        The Post object is used, like all other pseudo-ORM objects to
+        retrieve its DB cousin, which is the thing that can really be
+        played with.
 
+        Considering that posts are what it's all about, this is pretty
+        important.
+  */
+
+
+  // Required for using markdown, which is what posts are supposed to
+  // be in. Supposedly. I mean, someone could just write pure HTML if
+  // they wanted to.
   require_once(__dir__ . '/markdown/markdown.php');
   
   class Post {
 
-    // return ALL posts as DBPosts.
+    // return ALL posts as DBPosts. This is just an alias for find()
+    // without any parameters. But, aliases are nice...
     public static function all() {
       return self::find();
     }
@@ -14,15 +27,18 @@
       return self::find('where published=true');
     }
 
+    // search for a post by its id
     public static function find_by_id($id) {
       //return self::find("where id=$id")[0];
       $in = self::find("where id=$id");
       return $in[0];
     }
 
-    /*
-      Takes in 0 or 1 params: a where clause (including the "where" part).
-    */
+
+    // Queries posts. If you pass in a string with a where clause,
+    // including the "where" part, it'll do that. You could do more
+    // than just a where, but there probably isn't much use,
+    // considering that this produces DBPost Objects.
     public static function find() {
       $num_args = func_get_args();
 
@@ -40,8 +56,7 @@
       while ($stmt->fetch()) {
         array_push(
           $out, 
-          new DBPost(
-            $id, $title, $published, $pub_date, $post_file, $auth_id)
+          new DBPost($id, $title, $published, $pub_date, $post_file, $auth_id)
         );
   
       }
@@ -52,8 +67,9 @@
 
     /*
       Create a new post:
-
       Post::create($title, $contents, $author_id [, $published [, $pub_date]])
+
+      Returns the post's ID when added to the database.
 
       Params:
         $title: string: name of post
@@ -68,11 +84,14 @@
       $published = true;
       $pub_date = date('Y-m-d H:i:s');
 
+      // if $published is passed in (boolean)
       if (count($num_args) >= 4) {
         if (func_get_arg(3) == true  || func_get_arg(3) == false) {
           $published = func_get_arg(3);
         }
       }
+
+      // if $pub_date is passed in (timestamp)
       if (count($num_args) == 5) {
         $pub_date = date('Y-m-d H:i:s', func_get_args(4));
       }
@@ -88,14 +107,15 @@
         $pub_date
       );
 
+      // the insert query
       $query = 'insert into posts ';
       $query .= '(title, published, pub_date, contents, author_id)';
       $query .= " values (\"$title\", $published, \"";
       $query .= $pub_date->format('Y-m-d H:i:00');
       $query .= "\", \"$file\", $author_id);";
-
       SmallDB::query($query);
 
+      // the get the ID query. So that we can return it.
       $findQuery = 'select id from posts';;
       $findQuery .= "where title = \"$title\" and contents = \"$file\";";
       $stmt = SmallDB::queryStmt($findQuery);
@@ -106,6 +126,12 @@
       return $id;
     }
 
+    // create the post's file. It *should* have a copy of the post's metadata
+    // because eventually there'll be an import from directory function,
+    // which'll use the information in the file. Other than that, the metadata
+    // isn't used by Small.
+    //
+    // Returns the newly created file's path
     private static function createFile($title, $contents, $user, $published, $pub_date) {
       $filedir = $pub_date->format('Y/m/d/');
       $filename = $filedir . $pub_date->format('H-i-');
@@ -116,7 +142,7 @@
       // generate yaml
       $yaml = "---\ntitle: $title\npublished: $published\npub_date: ";
       $yaml .= $pub_date->format('Y-m-d H:i');
-      $yaml .= "\nauthor: " . $user->username . "\n---";
+      $yaml .= "\nauthor: " . $user->email . "\n---";
 
       $contents = $yaml . "\n\n" . $contents;
 
@@ -132,17 +158,20 @@
       return $filename;
     }
 
+    // so you don't want a file anymore, huh?
     public static function delete($id) {
+      // get the file's path
       $findQuery = "select contents from posts where id=$id;";
       $findStmt = SmallDB::queryStmt($findQuery);
       $findStmt->bind_result($filename);
       $findStmt->fetch();
 
+      // and delete it
       unlink("contents/posts/$filename");
       $findStmt->close();
 
+      // now get rid of the database entry
       $query = "delete from posts where id=$id;";
-      //echo $query;
       SmallDB::query($query);
     }
 

@@ -15,7 +15,6 @@
   require_once(__dir__ . '/includes/session.php');
   require_once(__dir__ . '/includes/user.php');
   require_once(__dir__ . '/includes/post.php');
-  require_once(__dir__ . '/includes/page.php');
   require_once(__dir__ . '/includes/functions.php');
   
 ?>

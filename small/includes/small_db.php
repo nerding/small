@@ -21,7 +21,7 @@
 
     // make a query on the database. Can't be manipulated
     public static function query($queryString) {
-      //echo $queryString; // debug
+      echo $queryString; // debug
 
       // try preparing the statement
       if ($stmt = self::$db->prepare($queryString)) {
@@ -43,7 +43,7 @@
     // make a query on the database, return a mysqli_stmt object
     // that can be manipulated by the user
     public static function queryStmt($queryString) {
-      //echo $queryString; // debug
+      echo $queryString; // debug
 
       // try to run the query
       if ($stmt = self::$db->prepare($queryString)) {

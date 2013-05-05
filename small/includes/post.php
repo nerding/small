@@ -43,7 +43,7 @@
       $num_args = func_get_args();
 
       $query = 'select id,title,published,pub_date,contents,author_id';
-      $query .= ' from posts';
+      $query .= ' from posts ';
       $query .= count($num_args) == 1 ? ' ' . func_get_arg(0) : '';
       $query .= ' order by pub_date;';
 
@@ -116,7 +116,7 @@
       SmallDB::query($query);
 
       // the get the ID query. So that we can return it.
-      $findQuery = 'select id from posts';;
+      $findQuery = 'select id from posts ';
       $findQuery .= "where title = \"$title\" and contents = \"$file\";";
       $stmt = SmallDB::queryStmt($findQuery);
       $stmt->bind_result($id);

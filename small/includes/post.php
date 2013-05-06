@@ -43,7 +43,7 @@
       $num_args = func_get_args();
 
       $query = 'select id,title,published,pub_date,contents,author_id';
-      $query .= ' from posts';
+      $query .= ' from posts ';
       $query .= count($num_args) == 1 ? ' ' . func_get_arg(0) : '';
       $query .= ' order by pub_date;';
 
@@ -116,7 +116,7 @@
       SmallDB::query($query);
 
       // the get the ID query. So that we can return it.
-      $findQuery = 'select id from posts';;
+      $findQuery = 'select id from posts ';
       $findQuery .= "where title = \"$title\" and contents = \"$file\";";
       $stmt = SmallDB::queryStmt($findQuery);
       $stmt->bind_result($id);
@@ -146,14 +146,15 @@
 
       $contents = $yaml . "\n\n" . $contents;
 
-      if (!is_dir('./contents/posts/' . $filedir)) {
-        mkdir('./contents/posts/' . $filedir, 0777, true);
-      }
+      if (!is_dir('./content/posts/' . $filedir))
+        if (!mkdir('./content/posts/' . $filedir, 0777, true))
+          die ("So... we couldn't make the post's file...");
+      
 
-      $file = fopen('contents/posts/' . $filename, 'c+');
+      $file = fopen('content/posts/' . $filename, 'c+');
       fwrite($file, $contents);
       fclose($file);
-      chmod('./contents/posts/' . $filename, 0777);
+      chmod('./content/posts/' . $filename, 0777);
 
       return $filename;
     }
@@ -167,7 +168,7 @@
       $findStmt->fetch();
 
       // and delete it
-      unlink("contents/posts/$filename");
+      unlink("content/posts/$filename");
       $findStmt->close();
 
       // now get rid of the database entry
@@ -224,7 +225,7 @@
         return false;
       }
 
-      $filename = './contents/posts/' . $this->post_file;
+      $filename = './content/posts/' . $this->post_file;
 
       $file = fopen($filename, 'r');
       $cont = fread($file, filesize($filename));

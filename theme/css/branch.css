@@ -38,3 +38,31 @@ h2 {
     margin-top: 35px;
     float: right;
     width: 160px; }
+
+.admin .wrap {
+  margin-top: 3em; }
+
+.header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: black;
+  height: 2em;
+  width: 100%;
+  padding: 0;
+  line-height: 2em;
+  vertical-align: center; }
+  .header-bar ul {
+    width: 800px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    color: white; }
+    .header-bar ul a {
+      color: white; }
+    .header-bar ul li {
+      float: left;
+      padding: 0 10px;
+      border-left: 1px solid white; }
+      .header-bar ul li:last-child {
+        border-right: 1px solid white; }

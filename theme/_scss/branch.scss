@@ -54,3 +54,44 @@ h2 { font-size: 2em; }
     width: 160px;
   }
 }
+
+.admin {
+  .wrap {
+    margin-top: 3em;
+  }
+}
+
+.header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background: black;
+  height: 2em;
+  width: 100%;
+  padding: 0;
+
+  line-height: 2em;
+  vertical-align: center;
+
+  ul {
+    width: 800px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+
+    color: white;
+
+    a {
+      color: white;
+    }
+
+    li { 
+      float: left; 
+      padding: 0 10px;
+      border-left: 1px solid white;
+
+      &:last-child { border-right: 1px solid white; }
+    }
+  }
+}

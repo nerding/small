@@ -21,7 +21,7 @@
 
     // make a query on the database. Can't be manipulated
     public static function query($queryString) {
-      //echo $queryString; // debug
+      echo $queryString; // debug
 
       // try preparing the statement
       if ($stmt = self::$db->prepare($queryString)) {

@@ -10,6 +10,9 @@
   include(__dir__ . '/../theme/head.php');
 ?>
 
+<script src="js/tabs.js"></script>
+<script src="js/write-post.js"></script>
+
 <body class="admin">
   <div class="header-bar">
     <ul id="tabs-links">
@@ -30,14 +33,24 @@
       <section id="write">
         Write
         <form id="writePost">
-          <input type="text" placeholder="Title" id="postTitle" name="postTitle" />
-          
+          <input type="text" placeholder="Title" id="postTitle" name="postTitle" />          
           <textarea id="postContents" name="postContents" placeholder="Just Start Writing"></textarea>
+          <input type="hidden" id="postAuthor" value="<?php echo Session::get('id'); ?>" />
+
+          <input type="submit" value="Post that post!" />
         </form>
       </section>
 
       <section id="revise">
         Revise
+
+        <ul>
+        <?php
+          foreach(Post::all() as $post) {
+            echo "<li>{$post->title}</li>";
+          }
+        ?>
+        </ul>
       </section>
 
       <section id="manage">
@@ -45,38 +58,5 @@
       </section>
     </div>
   </div>
-  
-  <script>
-    function showTab(section) {
-      $("#tabs").find('section').hide();
-      $(section).show();
-    }
-
-    window.onpopstate = function() {
-      if (window.location.hash)
-        showTab(window.location.hash);
-      else
-        showTab('#home');
-    }
-    
-    $(document).ready(function() {
-      $("#logout").click(function(event) {
-        event.preventDefault();
-        $.get("../ajax.php?action=logout", function(data) { location.reload(); });
-      });
-
-      // tabs
-      $('#tabs-links').find('a').click(function(event) {
-        event.preventDefault();
-        showTab($(this).attr('href'));
-        history.pushState(null, $(this).attr('href'), $(this).attr('href'));
-      });
-
-      showTab('#home');
-      if (window.location.hash)
-        showTab(window.location.hash);
-    })
- 
-  </script>
 </body>
 </html>
